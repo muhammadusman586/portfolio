@@ -22,10 +22,10 @@ const Contact = () => {
 
     try {
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'service_ip9n0e7',
+        'template_d1u3qzb',
         formRef.current,
-        'YOUR_PUBLIC_KEY'
+        'Czzp5xYYvbGvfYqIq'
       );
       setSubmitStatus('success');
       formRef.current.reset();
