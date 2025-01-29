@@ -5,12 +5,12 @@ import { Github, ExternalLink } from 'lucide-react';
 
 const projects = [
   {
-    title: 'Project 1',
-    description: 'A full-stack web application built with React and Node.js',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80',
+    title: 'Pizza Ordering Application',
+    description: 'A full-stack web application built with React ',
+    image: '/images/pizza.png',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
     github: 'https://github.com/muhammadusman586/Pizzeria',
-    demo: 'https://muhammadusman586.github.io/Pizzeria',
+    demo: 'https://pizzeria-murex.vercel.app/',
   },
   {
     title: 'Project 2',

@@ -19,6 +19,7 @@ const Contact = () => {
 
     setIsSubmitting(true);
     setSubmitStatus(null);
+    console.log(formRef.current.value);
 
     try {
       await emailjs.sendForm(
@@ -28,6 +29,7 @@ const Contact = () => {
         'Czzp5xYYvbGvfYqIq'
       );
       setSubmitStatus('success');
+       
       formRef.current.reset();
     } catch (error) {
       setSubmitStatus('error');
