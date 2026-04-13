@@ -3,9 +3,9 @@ import { useInView } from 'react-intersection-observer';
 import TerminalWindow from './TerminalWindow';
 
 const stack: Record<string, string[]> = {
-  frontend: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js'],
-  backend: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB'],
-  tools: ['Git', 'GitHub'],
+  frontend: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+  backend: ['Node.js', 'Express', 'MongoDB', 'PostgreSQL'],
+  tools: ['Git', 'GitHub', 'Docker'],
 };
 
 const keyPadding = Math.max(...Object.keys(stack).map((k) => k.length));

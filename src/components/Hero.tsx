@@ -4,8 +4,11 @@ import TerminalWindow from './TerminalWindow';
 
 const lines: Array<{ cmd: string; out?: string }> = [
   { cmd: 'whoami', out: 'Muhammad Usman Ramzan' },
-  { cmd: 'cat role.txt', out: 'Full Stack Developer' },
-  { cmd: 'echo $mission', out: 'Crafting beautiful, functional web applications.' },
+  { cmd: 'cat role.txt', out: 'Full-Stack Engineer · MERN · Next.js' },
+  {
+    cmd: 'echo $mission',
+    out: 'Shipping SaaS products. Contributing to open source.',
+  },
 ];
 
 const Hero = () => {
@@ -28,10 +31,14 @@ const Hero = () => {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="mb-4 font-mono text-xs text-muted flex items-center gap-2"
+          className="mb-4 font-mono text-xs text-muted flex flex-wrap items-center gap-x-3 gap-y-1"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse-dot" />
-          <span>session initialized — welcome back</span>
+          <span className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse-dot" />
+            <span>currently @ RipeSeed</span>
+          </span>
+          <span className="hidden sm:inline text-border">·</span>
+          <span>open-source contributor → Gemini CLI · Open Mercato</span>
         </motion.div>
 
         <TerminalWindow

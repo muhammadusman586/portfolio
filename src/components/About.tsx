@@ -70,30 +70,51 @@ const About = () => {
               }}
             >
               <div className="space-y-5 text-muted leading-relaxed">
-                <div>
-                  <div className="text-accent"># Hello, world.</div>
-                </div>
+                <div className="text-accent"># Hello, world.</div>
                 <p>
-                  I&apos;m a passionate Full Stack Developer with a strong foundation in
-                  modern web technologies. I love creating elegant solutions to complex
-                  problems and am dedicated to writing clean, efficient code.
+                  I build full-stack web products — fast, clean, and production-ready.
+                  Currently at{' '}
+                  <a
+                    href="https://ripeseed.io"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+                  >
+                    RipeSeed
+                  </a>
+                  , an engineering-excellence firm where I work across the stack:
+                  React, Next.js, Node.js, Express, and MongoDB/SQL. I ship real
+                  features for real customers.
                 </p>
                 <p>
-                  With experience in both front-end and back-end development, I enjoy
-                  building full-stack applications that are not only functional but also
-                  provide an excellent user experience. I&apos;m constantly learning and
-                  staying up-to-date with the latest technologies and best practices in
-                  web development.
+                  Beyond client work, I contribute to open source — including{' '}
+                  <span className="text-body">Google&apos;s Gemini CLI</span> and{' '}
+                  <span className="text-body">Open Mercato</span>, with PRs merged
+                  into actively used systems. Open to full-stack roles at SaaS
+                  companies building ambitious products.
                 </p>
-                <div className="pt-2 border-t border-border/60 flex flex-wrap gap-2 text-xs">
-                  {['#react', '#typescript', '#node', '#mongodb', '#tailwind'].map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 rounded-md bg-elevated border border-border text-accent/80"
-                    >
-                      {t}
-                    </span>
-                  ))}
+                <div className="pt-3 border-t border-border/60">
+                  <div className="text-xs text-muted mb-2">
+                    <span className="text-accent">&gt;</span> stack:
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 text-xs">
+                    {[
+                      'Next.js',
+                      'React',
+                      'Node.js',
+                      'Express',
+                      'TypeScript',
+                      'MongoDB',
+                      'PostgreSQL',
+                    ].map((t) => (
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 rounded-md bg-elevated border border-border text-accent/90"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </TerminalWindow>
