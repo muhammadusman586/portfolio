@@ -1,59 +1,153 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, FileDown } from 'lucide-react';
+import { Github, Linkedin, Mail, FileDown, ArrowRight } from 'lucide-react';
+import TerminalWindow from './TerminalWindow';
+
+const lines: Array<{ cmd: string; out?: string }> = [
+  { cmd: 'whoami', out: 'Muhammad Usman Ramzan' },
+  { cmd: 'cat role.txt', out: 'Full Stack Developer' },
+  { cmd: 'echo $mission', out: 'Crafting beautiful, functional web applications.' },
+];
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-              <span className="block">Hi, I'm</span>
-              <span className="block text-purple-600 dark:text-purple-400">Muhammad Usman Ramzan</span>
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Full Stack Developer passionate about creating beautiful and functional web applications
-            </p>
-          </motion.div>
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 lg:px-8"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0,255,127,0.10), transparent 60%)',
+        }}
+      />
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="mt-8 max-w-md mx-auto flex flex-col items-center space-y-6"
-          >
-            <motion.a
-              href="/resume.pdf"
-              download
-              className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors duration-300 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+      <div className="relative w-full max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-4 font-mono text-xs text-muted flex items-center gap-2"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse-dot" />
+          <span>session initialized — welcome back</span>
+        </motion.div>
+
+        <TerminalWindow
+          title="~/welcome.sh"
+          accentGlow
+          motionProps={{
+            initial: { opacity: 0, y: 24 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, ease: 'easeOut' },
+          }}
+        >
+          <div className="space-y-4 leading-relaxed">
+            {lines.map((line, i) => (
+              <motion.div
+                key={line.cmd}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 + i * 0.25, duration: 0.35 }}
+                className="space-y-1"
+              >
+                <div className="flex items-baseline gap-2 text-muted">
+                  <span className="text-accent">$</span>
+                  <span>{line.cmd}</span>
+                </div>
+                {line.out && (
+                  <div
+                    className={
+                      i === 0
+                        ? 'pl-4 text-2xl sm:text-4xl md:text-5xl font-sans font-bold tracking-tight text-body'
+                        : i === 1
+                        ? 'pl-4 text-base sm:text-lg text-accent'
+                        : 'pl-4 text-sm text-muted'
+                    }
+                  >
+                    {line.out}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1, duration: 0.3 }}
+              className="flex items-baseline gap-2 text-muted"
             >
-              <FileDown className="mr-2 h-5 w-5" />
-              Download Resume
-            </motion.a>
+              <span className="text-accent">$</span>
+              <span className="text-accent animate-blink">▋</span>
+            </motion.div>
+          </div>
+        </TerminalWindow>
 
-            <div className="flex justify-center space-x-6">
-              <a href="https://github.com/muhammadusman586" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                <Github size={24} />
-              </a>
-              <a href="https://linkedin.com/in/muhammad-usman-ramzan-a97105247" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                <Linkedin size={24} />
-              </a>
-              <a href="mailto:muhammadusmanramzan586@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-                <Mail size={24} />
-              </a>
-            </div>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.4 }}
+          className="mt-8 flex flex-wrap items-center gap-3 font-mono text-sm"
+        >
+          <a
+            href="#projects"
+            className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-bg font-medium hover:bg-accent-dim transition-colors focus-ring"
+          >
+            <span>./view_projects</span>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+          </a>
+
+          <a
+            href="/resume.pdf"
+            download
+            className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-surface text-body hover:border-accent hover:text-accent transition-colors focus-ring"
+          >
+            <FileDown size={16} />
+            <span>./download_resume.pdf</span>
+          </a>
+
+          <div className="ml-auto flex items-center gap-2">
+            <SocialChip
+              href="https://github.com/muhammadusman586"
+              label="gh"
+              Icon={Github}
+            />
+            <SocialChip
+              href="https://linkedin.com/in/muhammad-usman-ramzan-a97105247"
+              label="in"
+              Icon={Linkedin}
+            />
+            <SocialChip
+              href="mailto:muhammadusmanramzan586@gmail.com"
+              label="@"
+              Icon={Mail}
+              external={false}
+            />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 };
+
+type ChipProps = {
+  href: string;
+  label: string;
+  Icon: typeof Github;
+  external?: boolean;
+};
+
+const SocialChip = ({ href, label, Icon, external = true }: ChipProps) => (
+  <a
+    href={href}
+    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    aria-label={label}
+    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border bg-surface text-muted hover:text-accent hover:border-accent transition-colors focus-ring"
+  >
+    <Icon size={14} />
+    <span className="text-xs">[{label}]</span>
+  </a>
+);
 
 export default Hero;

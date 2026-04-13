@@ -1,58 +1,96 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import TerminalWindow from './TerminalWindow';
 
-const skills = [
-  { category: 'Frontend', items: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js'] },
-  { category: 'Backend', items: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB'] },
-  { category: 'Tools', items: ['Git', 'Github'] },
-  // { category: 'Other', items: ['Agile', 'CI/CD', 'RESTful APIs', 'GraphQL'] },
-];
+const stack: Record<string, string[]> = {
+  frontend: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js'],
+  backend: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB'],
+  tools: ['Git', 'GitHub'],
+};
+
+const keyPadding = Math.max(...Object.keys(stack).map((k) => k.length));
 
 const Skills = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
-    <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="skills" className="relative py-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto" ref={ref}>
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.4 }}
+          className="space-y-2"
         >
-          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white text-center sm:text-4xl mb-12">
-            Skills & Technologies
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {skills.map((skillGroup, index) => (
-              <motion.div
-                key={skillGroup.category}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
-              >
-                <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
-                  {skillGroup.category}
-                </h3>
-                <ul className="space-y-3">
-                  {skillGroup.items.map((skill) => (
-                    <li
-                      key={skill}
-                      className="flex items-center text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200"
-                    >
-                      <span className="w-2 h-2 bg-purple-600 dark:bg-purple-400 rounded-full mr-3"></span>
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+          <div className="font-mono text-xs text-muted flex items-center gap-2">
+            <span className="text-accent">$</span>
+            <span>cat TECH_STACK.json</span>
           </div>
+          <h2 className="font-mono text-3xl sm:text-4xl font-bold text-body">
+            <span className="text-accent">#</span> tech_stack
+          </h2>
+        </motion.div>
+
+        <div className="mt-10">
+          <TerminalWindow
+            title="TECH_STACK.json"
+            motionProps={{
+              initial: { opacity: 0, y: 20 },
+              animate: inView ? { opacity: 1, y: 0 } : {},
+              transition: { duration: 0.5, delay: 0.15 },
+            }}
+          >
+            <pre className="text-sm leading-7 whitespace-pre-wrap">
+              <span className="json-bracket">{'{'}</span>
+              {'\n'}
+              {Object.entries(stack).map(([key, items], i) => {
+                const paddedKey = key.padEnd(keyPadding);
+                const isLast = i === Object.keys(stack).length - 1;
+                return (
+                  <motion.span
+                    key={key}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.35, delay: 0.3 + i * 0.12 }}
+                    className="block"
+                  >
+                    {'  '}
+                    <span className="json-key">&quot;{paddedKey}&quot;</span>
+                    <span className="json-punc">: </span>
+                    <span className="json-bracket">[</span>
+                    {items.map((item, j) => (
+                      <motion.span
+                        key={item}
+                        initial={{ opacity: 0 }}
+                        animate={inView ? { opacity: 1 } : {}}
+                        transition={{
+                          duration: 0.3,
+                          delay: 0.5 + i * 0.12 + j * 0.05,
+                        }}
+                      >
+                        <span className="json-string">&quot;{item}&quot;</span>
+                        {j < items.length - 1 && <span className="json-punc">, </span>}
+                      </motion.span>
+                    ))}
+                    <span className="json-bracket">]</span>
+                    {!isLast && <span className="json-punc">,</span>}
+                  </motion.span>
+                );
+              })}
+              <span className="json-bracket">{'}'}</span>
+            </pre>
+          </TerminalWindow>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.4, delay: 0.9 }}
+          className="mt-6 font-mono text-xs text-muted flex items-center gap-2"
+        >
+          <span className="text-accent">→</span>
+          <span>always learning, currently exploring:</span>
+          <span className="text-accent">system design · rust · cloud infra</span>
         </motion.div>
       </div>
     </section>

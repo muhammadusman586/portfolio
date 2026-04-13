@@ -1,16 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+
+const NAV_ITEMS = [
+  { label: 'home', id: 'home' },
+  { label: 'about', id: 'about' },
+  { label: 'skills', id: 'skills' },
+  { label: 'projects', id: 'projects' },
+  { label: 'contact', id: 'contact' },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [active, setActive] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      const offset = window.scrollY + window.innerHeight * 0.35;
+      for (const item of NAV_ITEMS) {
+        const el = document.getElementById(item.id);
+        if (!el) continue;
+        const top = el.offsetTop;
+        const bottom = top + el.offsetHeight;
+        if (offset >= top && offset < bottom) {
+          setActive(item.id);
+          break;
+        }
+      }
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -23,60 +44,87 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-bg/80 backdrop-blur-md border-b border-border'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0 cursor-pointer" onClick={() => scrollToSection('home')}>
-            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-              Portfolio
-            </span>
-          </div>
+          <button
+            onClick={() => scrollToSection('home')}
+            className="font-mono text-sm flex items-center gap-2 focus-ring rounded-md px-1"
+          >
+            <span className="text-accent">$</span>
+            <span className="text-body">usman</span>
+            <span className="text-muted">@</span>
+            <span className="text-body">portfolio</span>
+            <span className="text-accent animate-blink">▋</span>
+          </button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
-            <div className="flex items-baseline space-x-8">
-              {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
+          <div className="hidden md:flex items-center gap-1 font-mono text-sm">
+            {NAV_ITEMS.map((item) => {
+              const isActive = active === item.id;
+              return (
                 <button
-                  key={item}
-                  onClick={() => scrollToSection(item.toLowerCase())}
-                  className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors px-3 py-2 rounded-md text-sm font-medium"
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative px-3 py-1.5 rounded-md transition-colors focus-ring ${
+                    isActive
+                      ? 'text-accent'
+                      : 'text-muted hover:text-body'
+                  }`}
                 >
-                  {item}
+                  <span className="text-muted/60">./</span>
+                  {item.label}
+                  {isActive && (
+                    <span className="absolute left-3 right-3 -bottom-0.5 h-px bg-accent shadow-glow-sm" />
+                  )}
                 </button>
-              ))}
-            </div>
-            <ThemeToggle />
+              );
+            })}
           </div>
 
-          {/* Mobile Navigation Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <ThemeToggle />
+          <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 focus:outline-none"
+              aria-label={isOpen ? 'close menu' : 'open menu'}
+              className="inline-flex items-center justify-center p-2 rounded-md text-muted hover:text-accent focus-ring"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
-              >
-                {item}
-              </button>
-            ))}
+        <div className="md:hidden mx-4 mb-4 rounded-2xl bg-surface border border-border shadow-term overflow-hidden">
+          <div className="flex items-center gap-1.5 px-4 py-3 bg-elevated border-b border-border">
+            <span className="h-2.5 w-2.5 rounded-full bg-term-red/90" />
+            <span className="h-2.5 w-2.5 rounded-full bg-term-yellow/90" />
+            <span className="h-2.5 w-2.5 rounded-full bg-term-green/90" />
+            <span className="flex-1 text-center font-mono text-xs text-muted">menu.sh</span>
+            <span className="w-8" />
           </div>
+          <ul className="p-3 font-mono text-sm">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.id}>
+                <button
+                  onClick={() => scrollToSection(item.id)}
+                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                    active === item.id
+                      ? 'text-accent bg-accent/5'
+                      : 'text-muted hover:text-body hover:bg-elevated'
+                  }`}
+                >
+                  <span className="text-accent mr-2">$</span>
+                  cd ./{item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </nav>
