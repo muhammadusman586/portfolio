@@ -15,6 +15,16 @@ type Project = {
 };
 
 const projects: Project[] = [
+    {
+    title: 'Connect Devs',
+    filename: 'connect_devs.ts',
+    description: 'A developer social networking platform — discover developers, swipe to connect, and build your network.',
+    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
+    image: '/images/ConnectDevs.jpeg',
+    github: 'https://github.com/muhammadusman586/ConnectDevs',
+    demo: 'https://connectdevs.vercel.app/',
+    status: 'live',
+  },
   {
     title: 'Pizza Ordering Application',
     filename: 'pizzeria.tsx',
@@ -24,16 +34,6 @@ const projects: Project[] = [
     technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
     github: 'https://github.com/muhammadusman586/Pizzeria',
     demo: 'https://pizzeria-murex.vercel.app/',
-    status: 'live',
-  },
-  {
-    title: 'Connect Devs',
-    filename: 'connect_devs.ts',
-    description: 'A developer social networking platform — discover developers, swipe to connect, and build your network.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: '/images/ConnectDevs.jpeg',
-    github: 'https://github.com/muhammadusman586/ConnectDevs',
-    demo: 'https://connectdevs.vercel.app/',
     status: 'live',
   },
   {
