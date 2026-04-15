@@ -31,7 +31,7 @@ const projects: Project[] = [
     filename: 'connect_devs.ts',
     description: 'A developer social networking platform — discover developers, swipe to connect, and build your network.',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: '/images/ConnectDevs.png',
+    image: '/images/ConnectDevs.jpeg',
     github: 'https://github.com/muhammadusman586/ConnectDevs',
     demo: 'https://connectdevs.vercel.app/',
     status: 'live',
