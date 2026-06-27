@@ -15,17 +15,18 @@ type Project = {
 };
 
 const projects: Project[] = [
-    {
-    title: 'Connect Devs',
-    filename: 'connect_devs.ts',
-    description: 'A developer social networking platform — discover developers, swipe to connect, and build your network.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: '/images/ConnectDevs.jpeg',
-    github: 'https://github.com/muhammadusman586/ConnectDevs',
-    demo: 'https://connectdevs.vercel.app/',
+   {
+    title: 'Hirrd',
+    filename: 'hirrd.tsx',
+    description:
+      'A full-stack job portal where candidates browse and apply to roles while recruiters post and manage listings — with Clerk-powered auth, role-based access, and saved jobs.',
+    technologies: ['React', 'Tailwind CSS', 'Supabase', 'Clerk'],
+    image: '/images/Hirrd.png',
+    github:'git@github.com:muhammadusman586/jobportal.git',
+    demo: 'https://hirrd-lyart.vercel.app/',
     status: 'live',
   },
-  {
+    {
     title: 'Pizza Ordering Application',
     filename: 'pizzeria.tsx',
     description:
@@ -36,12 +37,15 @@ const projects: Project[] = [
     demo: 'https://pizzeria-murex.vercel.app/',
     status: 'live',
   },
-  {
-    title: 'project_03',
-    filename: 'project_03.ts',
-    description: 'Something new is brewing. Check back soon.',
-    technologies: ['—'],
-    status: 'coming_soon',
+    {
+    title: 'Connect Devs',
+    filename: 'connect_devs.ts',
+    description: 'A developer social networking platform — discover developers, swipe to connect, and build your network.',
+    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
+    image: '/images/ConnectDevs.jpeg',
+    github: 'https://github.com/muhammadusman586/ConnectDevs',
+    demo: 'https://connectdevs.vercel.app/',
+    status: 'live',
   },
 ];
 
