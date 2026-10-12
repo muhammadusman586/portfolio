@@ -49,7 +49,7 @@ const HowIShip = () => {
         <div className="relative mx-2 mb-4 mt-14 sm:mx-6">
           <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 border-y-[3px] border-ink bg-[#B07CFF]" />
           <motion.div
-            className="absolute inset-y-0 left-0 top-1/2 h-3 -translate-y-1/2 border-y-[3px] border-ink bg-lime"
+            className="absolute inset-y-0 left-0 top-1/2 h-3 -translate-y-1/2 border-y-[3px] border-ink bg-signal"
             initial={{ width: '0%' }}
             animate={{ width: `${(Math.max(at, 0) / LAST) * 100}%` }}
             transition={{ duration: STEP_MS / 1000, ease: 'easeInOut' }}
@@ -71,7 +71,7 @@ const HowIShip = () => {
                   <motion.span
                     animate={{ scale: i === at ? 1.4 : 1 }}
                     className={`relative z-10 block h-7 w-7 rounded-full border-[4px] border-ink transition-colors duration-300 ${
-                      reached ? 'bg-lime' : 'bg-paper'
+                      reached ? 'bg-signal' : 'bg-paper'
                     }`}
                   />
                 </li>
@@ -100,7 +100,7 @@ const HowIShip = () => {
                   key={`${run}-${s.stop}`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className={i === LAST ? 'text-lime' : ''}
+                  className={i === LAST ? 'text-signal' : ''}
                 >
                   <span className="text-paper/40">[{String(i * 2).padStart(2, '0')}s]</span> {s.log}
                 </motion.p>
@@ -108,7 +108,7 @@ const HowIShip = () => {
             </AnimatePresence>
             {at === -1 && <p className="text-paper/50">waiting at platform…</p>}
           </div>
-          <button onClick={dispatch} disabled={running} className="btn focus-ring justify-center bg-lime disabled:cursor-wait disabled:opacity-60">
+          <button onClick={dispatch} disabled={running} className="btn focus-ring justify-center bg-signal disabled:cursor-wait disabled:opacity-60">
             {at === LAST ? <RotateCcw size={16} /> : <Send size={16} />}
             {running ? 'En route…' : at === LAST ? 'Ship it again' : 'Dispatch train'}
           </button>

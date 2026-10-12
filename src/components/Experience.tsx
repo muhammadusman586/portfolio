@@ -12,7 +12,7 @@ const Stamp = ({ big, small, id }: { big: string; small: string; id: string }) =
     whileInView={{ scale: 1, opacity: 0.9, rotate: -14 }}
     viewport={{ once: true, amount: 1 }}
     transition={{ type: 'spring', stiffness: 500, damping: 18, delay: 0.25 }}
-    className="pointer-events-none absolute right-4 top-6 hidden w-28 text-pink md:block lg:right-8 lg:w-32"
+    className="pointer-events-none absolute right-4 top-6 hidden w-28 text-accent md:block lg:right-8 lg:w-32"
   >
     <defs>
       <path id={id} d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0" />
@@ -58,25 +58,25 @@ const Experience = () => (
           transition={{ duration: 0.45, delay: 0.05 * i }}
           className="group relative grid gap-4 border-b-[3px] border-dashed border-ink/80 px-6 py-7 transition-colors last:border-b-0 hover:bg-[#fffde8] md:grid-cols-[170px_260px_1fr] md:gap-6 md:pr-40 lg:pr-48"
         >
-          <span className="absolute inset-y-0 left-0 w-0 bg-pink transition-all duration-200 group-hover:w-2" />
+          <span className="absolute inset-y-0 left-0 w-0 bg-accent transition-all duration-200 group-hover:w-2" />
           <div className="font-mono text-sm font-semibold">
             {r.when}{' '}
-            {r.current && <span className="ml-1 animate-blink bg-pink px-1.5 py-0.5 text-[10px] font-bold text-paper">NOW</span>}
+            {r.current && <span className="ml-1 animate-blink bg-accent px-1.5 py-0.5 text-[10px] font-bold text-paper">NOW</span>}
           </div>
           <div>
             <h3 className="text-lg font-extrabold leading-tight">{r.title}</h3>
             {r.link ? (
-              <a href={r.link} target="_blank" rel="noopener noreferrer" className="focus-ring inline-flex items-center gap-0.5 text-sm text-muted underline underline-offset-2 hover:text-pink">
+              <a href={r.link} target="_blank" rel="noopener noreferrer" className="focus-ring inline-flex items-center gap-0.5 text-sm text-muted underline underline-offset-2 hover:text-accent">
                 {r.org} <ArrowUpRight size={14} />
               </a>
             ) : (
               <p className="text-sm text-muted">{r.org}</p>
             )}
-            <span className="mt-3 block w-fit border-2 border-ink bg-lime px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest">
+            <span className="mt-3 block w-fit border-2 border-ink bg-signal px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest">
               {r.tag}
             </span>
           </div>
-          <ul className="list-disc space-y-2 pl-5 leading-relaxed marker:text-pink">
+          <ul className="list-disc space-y-2 pl-5 leading-relaxed marker:text-accent">
             {r.bullets.map((b) => (
               <li key={b}><Rich text={b} /></li>
             ))}

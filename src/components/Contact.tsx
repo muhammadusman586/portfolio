@@ -8,12 +8,12 @@ import { StationHeader } from './ui';
 const ROWS = [
   { Icon: Mail, label: 'Email', value: LINKS.email, copy: true },
   { Icon: Phone, label: 'Phone', value: LINKS.phone, href: `tel:${LINKS.phone.replace(/\s/g, '')}` },
-  { Icon: Linkedin, label: 'LinkedIn', value: 'muhammad-usman-ramzan', href: LINKS.linkedin },
+  { Icon: Linkedin, label: 'LinkedIn', value: 'muhammadusman586', href: LINKS.linkedin },
   { Icon: Github, label: 'GitHub', value: 'muhammadusman586', href: LINKS.github },
   { Icon: FileText, label: 'Résumé', value: 'View PDF', href: LINKS.resume },
 ];
 
-const CONFETTI = ['#FF3EA5', '#E6FF00', '#2D4BFF', '#7AF7FF', '#111111'];
+const CONFETTI = ['rgb(var(--accent))', 'rgb(var(--signal))', 'rgb(var(--deep))', 'rgb(var(--sky))', '#111111'];
 
 /** One-shot confetti burst; remount (via key) to fire again. */
 const Confetti = () => (
@@ -106,10 +106,10 @@ const Contact = () => {
           whileInView={{ scale: 1, rotate: -4 }}
           viewport={{ once: true }}
           transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 0.4 }}
-          className="relative z-20 mx-auto -mb-6 w-fit border-b-[5px] border-r-[5px] border-pink bg-ink px-6 py-3 text-center"
+          className="relative z-20 mx-auto -mb-6 w-fit border-b-[5px] border-r-[5px] border-accent bg-ink px-6 py-3 text-center"
         >
           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-paper">Station #06 · end of the line</p>
-          <p className="bg-gradient-to-r from-pink via-lime to-cyan bg-clip-text font-display text-3xl uppercase text-transparent sm:text-4xl">
+          <p className="bg-gradient-to-r from-accent via-signal to-sky bg-clip-text font-display text-3xl uppercase text-transparent sm:text-4xl">
             Terminus!
           </p>
         </motion.div>
@@ -128,7 +128,7 @@ const Contact = () => {
 
           <div className="grid gap-10 lg:grid-cols-2 lg:divide-x-2 lg:divide-dashed lg:divide-paper/30">
             <div className="min-w-0 lg:pr-10">
-              <span className="inline-block -rotate-2 border-[3px] border-ink bg-lime px-3 py-1 font-display text-xl text-ink shadow-hard-sm">
+              <span className="inline-block -rotate-2 border-[3px] border-ink bg-signal px-3 py-1 font-display text-xl text-ink shadow-hard-sm">
                 Reach me →
               </span>
               <ul className="mt-6 space-y-3">
@@ -150,7 +150,7 @@ const Contact = () => {
                         href={href}
                         target={href!.startsWith('http') || href!.endsWith('.pdf') ? '_blank' : undefined}
                         rel="noopener noreferrer"
-                        className="focus-ring inline-flex items-center gap-0.5 font-mono text-[11px] font-bold uppercase tracking-wider text-paper hover:text-lime"
+                        className="focus-ring inline-flex items-center gap-0.5 font-mono text-[11px] font-bold uppercase tracking-wider text-paper hover:text-signal"
                       >
                         Open <ArrowUpRight size={12} />
                       </a>
@@ -165,21 +165,21 @@ const Contact = () => {
             </div>
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 lg:pl-10">
-              <p className="font-marker text-2xl text-lime">↪ Send a message</p>
+              <p className="font-marker text-2xl text-signal">↪ Send a message</p>
               {[
                 { name: 'name', label: 'Name', type: 'text', ph: 'Your name' },
                 { name: 'email', label: 'Email', type: 'email', ph: 'you@company.com' },
               ].map((f) => (
-                <label key={f.name} className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-pink">
+                <label key={f.name} className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-accent">
                   <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
-                    {f.label} <span className="text-pink">*</span>
+                    {f.label} <span className="text-accent">*</span>
                   </span>
                   <input name={f.name} type={f.type} required placeholder={f.ph} className="block w-full bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
                 </label>
               ))}
-              <label className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-pink">
+              <label className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-accent">
                 <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
-                  Message <span className="text-pink">*</span>
+                  Message <span className="text-accent">*</span>
                 </span>
                 <textarea name="message" required rows={4} placeholder="What are you building?" className="block w-full resize-y bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
               </label>
@@ -192,13 +192,13 @@ const Contact = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
                       role="status"
-                      className={`font-mono text-xs font-bold uppercase ${status === 'success' ? 'text-lime' : 'text-pink'}`}
+                      className={`font-mono text-xs font-bold uppercase ${status === 'success' ? 'text-signal' : 'text-accent'}`}
                     >
                       {status === 'success' ? '✓ Delivered. I’ll reply soon.' : '✗ Send failed. Please retry.'}
                     </motion.p>
                   )}
                 </AnimatePresence>
-                <button type="submit" disabled={sending} className="btn focus-ring ml-auto bg-lime normal-case tracking-normal disabled:cursor-wait disabled:opacity-60">
+                <button type="submit" disabled={sending} className="btn focus-ring ml-auto bg-signal normal-case tracking-normal disabled:cursor-wait disabled:opacity-60">
                   <Send size={16} /> {sending ? 'Sending…' : 'Send message'}
                 </button>
               </div>
@@ -206,7 +206,7 @@ const Contact = () => {
           </div>
         </div>
 
-        <span className="absolute -bottom-5 left-4 -rotate-3 border-[3px] border-ink bg-pink text-ink px-4 py-2 font-display text-lg shadow-hard sm:text-2xl">
+        <span className="absolute -bottom-5 left-4 -rotate-3 border-[3px] border-ink bg-accent text-ink px-4 py-2 font-display text-lg shadow-hard sm:text-2xl">
           Let’s build something!
         </span>
       </motion.div>

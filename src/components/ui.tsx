@@ -21,7 +21,7 @@ export const StationHeader = ({ num, title, tag, children }: HeaderProps) => (
   >
     <motion.span
       variants={{ hidden: { opacity: 0, x: -30, rotate: -6 }, show: { opacity: 1, x: 0, rotate: -2 } }}
-      className="mb-3 inline-block bg-lime px-3 py-1 text-ink font-mono text-xs font-bold uppercase tracking-[0.2em]"
+      className="mb-3 inline-block bg-signal px-3 py-1 text-ink font-mono text-xs font-bold uppercase tracking-[0.2em]"
     >
       Station #{num}
     </motion.span>

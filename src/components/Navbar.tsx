@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Moon, Sun, Volume2, VolumeX } from 'lucide-react';
 import { isSoundOn, play, setSound } from '../sound';
+import ThemePicker from './ThemePicker';
 
-/** Slim top bar: name, availability pill, night-service switch and sound toggle. */
+/** Slim top bar: name, availability pill, theme picker, sound toggle and night-service switch. */
 const Navbar = () => {
   const [night, setNight] = useState(() => document.documentElement.classList.contains('dark'));
   const [sound, setSoundState] = useState(isSoundOn);
@@ -28,14 +29,16 @@ const Navbar = () => {
   return (
     <header className="fixed inset-x-0 top-0 z-40 bg-bg/80 backdrop-blur-sm">
       <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <a href="#home" className="focus-ring font-mono text-xs font-bold uppercase tracking-[0.15em]">
-          Muhammad Usman <span className="text-pink">/</span> <span className="hidden sm:inline">Portfolio</span>
+        <a href="#home" className="focus-ring font-mono text-[11px] font-bold uppercase tracking-[0.12em] sm:text-xs sm:tracking-[0.15em]">
+          Muhammad Usman <span className="text-accent">/</span> <span className="hidden sm:inline">Portfolio</span>
         </a>
         <div className="flex items-center gap-2 lg:mr-20">
-          <span className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-lime md:flex">
-            <span className="h-2 w-2 animate-blink rounded-full bg-lime" />
+          <span className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-signal md:flex">
+            <span className="h-2 w-2 animate-blink rounded-full bg-signal" />
             Now boarding: software engineer roles
           </span>
+
+          <ThemePicker />
 
           <button
             onClick={toggleSound}
@@ -61,7 +64,7 @@ const Navbar = () => {
             <motion.span
               layout
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              className={`relative z-10 grid h-6 w-7 place-items-center border-2 border-ink ${night ? 'ml-auto bg-blue text-lime' : 'bg-lime text-ink'}`}
+              className={`relative z-10 grid h-6 w-7 place-items-center border-2 border-ink ${night ? 'ml-auto bg-deep text-signal' : 'bg-signal text-ink'}`}
             >
               {night ? <Moon size={12} /> : <Sun size={12} />}
             </motion.span>

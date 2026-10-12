@@ -2,18 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Day service by default; `.dark` on <html> is night service. Cards stay lit (paper + ink). */
+/*
+ * Line themes: `data-theme` on <html> picks the palette (default = Poster Pop).
+ * Night service: `.dark` on <html> darkens the page; cards stay lit (paper + ink).
+ * Values are RGB triplets so Tailwind opacity modifiers work.
+ */
 :root {
-  --bg: 238 236 230;
+  --accent: 255 62 165;
+  --signal: 230 255 0;
+  --deep: 45 75 255;
+  --sky: 122 247 255;
+  --alt: 255 185 56; /* sixth colour, only for the Integrations line */
+  --board: 22 35 29;
+  --day: 238 236 230;
+  --night: 15 16 26;
+
+  --bg: var(--day);
   --fg: 17 17 17;
   --shadow: #111111;
   --dot: rgba(17, 17, 17, 0.07);
   color-scheme: light;
 }
+[data-theme='london'] {
+  --accent: 220 36 31; /* Central */
+  --signal: 255 211 41; /* Circle */
+  --deep: 0 25 168; /* Piccadilly */
+  --sky: 149 205 186; /* Waterloo & City */
+  --alt: 238 124 14; /* Overground */
+  --board: 0 25 80;
+  --day: 244 243 239;
+  --night: 10 14 32;
+}
+[data-theme='tokyo'] {
+  --accent: 246 46 54; /* Marunouchi */
+  --signal: 255 149 0; /* Ginza */
+  --deep: 0 120 90; /* Chiyoda, deepened for text contrast */
+  --sky: 154 220 235; /* Tozai, lightened */
+  --alt: 181 181 172; /* Hibiya */
+  --board: 28 30 34;
+  --day: 247 244 238;
+  --night: 18 18 22;
+}
+[data-theme='nyc'] {
+  --accent: 238 53 46; /* 1/2/3 */
+  --signal: 252 204 10; /* N/Q/R/W */
+  --deep: 0 57 166; /* A/C/E */
+  --sky: 108 190 69; /* G */
+  --alt: 255 99 25; /* B/D/F/M */
+  --board: 17 17 17;
+  --day: 242 242 242;
+  --night: 8 8 8;
+}
 .dark {
-  --bg: 15 16 26;
+  --bg: var(--night);
   --fg: 238 236 230;
-  --shadow: #ff3ea5;
+  --shadow: rgb(var(--accent));
   --dot: rgba(255, 255, 255, 0.07);
   color-scheme: dark;
 }
@@ -33,23 +76,23 @@ body {
 
 /* night service: train windows glow */
 .dark .train-win {
-  filter: drop-shadow(0 0 5px #7af7ff);
+  filter: drop-shadow(0 0 5px rgb(var(--sky)));
 }
 
 ::selection {
-  background: #e6ff00;
+  background: rgb(var(--signal));
   color: #111111;
 }
 
 @layer components {
-  /* Big poster heading with an offset pink duplicate behind it */
+  /* Big poster heading with an offset accent-colour duplicate behind it */
   .poster {
     @apply font-display leading-[0.85] tracking-tight text-fg;
-    text-shadow: 0.06em 0.05em 0 #ff3ea5;
+    text-shadow: 0.06em 0.05em 0 rgb(var(--accent));
   }
 
   .sticker {
-    @apply inline-block border-[3px] border-ink bg-pink px-4 py-1 font-marker text-ink shadow-hard-sm;
+    @apply inline-block border-[3px] border-ink bg-accent px-4 py-1 font-marker text-ink shadow-hard-sm;
   }
 
   .label {
@@ -62,12 +105,12 @@ body {
   }
 
   .hl {
-    @apply bg-lime font-semibold text-ink;
+    @apply bg-signal font-semibold text-ink;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
   }
 
   .focus-ring {
-    @apply focus:outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-pink;
+    @apply focus:outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-accent;
   }
 }

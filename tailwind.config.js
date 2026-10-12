@@ -4,17 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        // bg/fg flip for night mode (see index.css); everything else is fixed.
+        // Theme tokens are CSS vars (see index.css): bg/fg flip at night, the
+        // rest change with the chosen line theme. paper/ink/muted are fixed.
         bg: 'rgb(var(--bg) / <alpha-value>)',
         fg: 'rgb(var(--fg) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)', // stickers, shadows at night, poster echo
+        signal: 'rgb(var(--signal) / <alpha-value>)', // highlights; always paired with dark text
+        deep: 'rgb(var(--deep) / <alpha-value>)', // dark secondary; paired with light text
+        sky: 'rgb(var(--sky) / <alpha-value>)', // light secondary (windows, chips)
+        board: 'rgb(var(--board) / <alpha-value>)',
         paper: '#F7F6F1',
         ink: '#111111',
         muted: '#5c5a55',
-        pink: '#FF3EA5',
-        lime: '#E6FF00',
-        blue: '#2D4BFF',
-        cyan: '#7AF7FF',
-        board: '#16231d',
         amber: '#FFB938',
       },
       fontFamily: {
@@ -32,11 +33,13 @@ export default {
         marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
         blink: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.25' } },
         bob: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
+        shuttle: { from: { left: '0%' }, to: { left: '100%' } },
       },
       animation: {
         marquee: 'marquee 28s linear infinite',
         blink: 'blink 1.2s ease-in-out infinite',
         bob: 'bob 0.6s ease-in-out infinite',
+        shuttle: 'shuttle 5s ease-in-out infinite alternate',
       },
     },
   },

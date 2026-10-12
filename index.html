@@ -8,7 +8,7 @@
       href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23FF3EA5' stroke='%23111' stroke-width='6'/><text x='50%25' y='56%25' font-family='Arial Black,sans-serif' font-size='26' font-weight='900' text-anchor='middle' dominant-baseline='middle' fill='%23111'>MU</text></svg>"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#EEECE6" />
+    <meta name="theme-color" content="#080808" />
     <meta
       name="description"
       content="Muhammad Usman Ramzan — Software Engineer building full-stack products in TypeScript, Next.js, React, Node.js and PostgreSQL."
@@ -21,10 +21,17 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Bowlby+One&family=IBM+Plex+Mono:wght@400;600;700&family=Permanent+Marker&display=swap"
     />
     <script>
-      // Apply saved night/day choice before first paint to avoid a flash.
+      // Apply theme before first paint to avoid a flash. Defaults: night mode + NYC Subway;
+      // a saved visitor choice wins.
+      var html = document.documentElement;
       try {
-        if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
-      } catch (e) {}
+        if (localStorage.getItem('theme') !== 'light') html.classList.add('dark');
+        var palette = localStorage.getItem('palette') || 'nyc';
+        if (palette !== 'poster') html.dataset.theme = palette;
+      } catch (e) {
+        html.classList.add('dark');
+        html.dataset.theme = 'nyc';
+      }
     </script>
   </head>
   <body>

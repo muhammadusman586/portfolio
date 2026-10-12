@@ -40,13 +40,13 @@ const MetroPass = () => {
       >
         {/* front */}
         <div className="absolute inset-0 flex flex-col border-[3px] border-ink bg-paper text-ink shadow-hard-lg [backface-visibility:hidden]">
-          <div className="flex items-center justify-between bg-blue px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-paper">
+          <div className="flex items-center justify-between bg-deep px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-paper">
             <span>MU Metro</span>
             <span>Monthly pass</span>
           </div>
           <div className="relative m-4 mb-3 flex-1 overflow-hidden border-[3px] border-ink">
             <img src="/images/Usman.jpg" alt="Muhammad Usman" loading="lazy" decoding="async" className="h-full w-full object-cover object-[50%_62%]" />
-            <span className="absolute bottom-2 right-2 -rotate-12 border-2 border-pink px-2 font-display text-sm text-pink">VALID</span>
+            <span className="absolute bottom-2 right-2 -rotate-12 border-2 border-accent px-2 font-display text-sm text-accent">VALID</span>
           </div>
           <div className="px-4 pb-4">
             <p className="font-display text-2xl leading-none">MUHAMMAD USMAN</p>
@@ -56,7 +56,7 @@ const MetroPass = () => {
         </div>
 
         {/* back */}
-        <div className="absolute inset-0 flex flex-col justify-between border-[3px] border-ink bg-lime p-5 text-ink shadow-hard-lg [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        <div className="absolute inset-0 flex flex-col justify-between border-[3px] border-ink bg-signal p-5 text-ink shadow-hard-lg [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div>
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em]">Passenger details</p>
             <dl className="mt-4 space-y-3">
@@ -68,7 +68,7 @@ const MetroPass = () => {
               ))}
             </dl>
           </div>
-          <p className="font-marker text-blue">valid for ambitious products →</p>
+          <p className="font-marker text-deep">valid for ambitious products →</p>
         </div>
       </motion.button>
       <p className="mt-5 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-widest text-fg/60">

@@ -60,7 +60,7 @@ const RushHour = () => {
         initial={{ scale: 0, rotate: -20 }}
         animate={{ scale: 1, rotate: -6 }}
         transition={{ type: 'spring', stiffness: 300, damping: 12 }}
-        className="absolute left-1/2 top-1/2 -ml-[min(42vw,220px)] -mt-12 w-[min(84vw,440px)] border-[4px] border-ink bg-lime py-4 text-center font-display text-5xl text-ink shadow-[8px_8px_0_#FF3EA5] sm:text-6xl"
+        className="absolute left-1/2 top-1/2 -ml-[min(42vw,220px)] -mt-12 w-[min(84vw,440px)] border-[4px] border-ink bg-signal py-4 text-center font-display text-5xl text-ink shadow-[8px_8px_0_rgb(var(--accent))] sm:text-6xl"
       >
         RUSH HOUR!
       </motion.p>

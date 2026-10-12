@@ -15,9 +15,9 @@ export const STATIONS = [
 
 export const LINKS = {
   email: 'muhammadusmanramzan586@gmail.com',
-  phone: '+92 300 9830142',
+  phone: '+92 300 983 0142',
   github: 'https://github.com/muhammadusman586',
-  linkedin: 'https://linkedin.com/in/muhammad-usman-ramzan-a97105247',
+  linkedin: 'https://linkedin.com/in/muhammadusman586',
   resume: '/resume.pdf',
 };
 
@@ -39,11 +39,11 @@ export const JOURNEY: Role[] = [
     title: 'Software Engineer',
     org: 'RipeSeed',
     link: 'https://ripeseed.io',
-    tag: 'Full-time',
+    tag: 'Full-time · Lahore',
     bullets: [
-      'Delivered **full-stack features** for client products in TypeScript: **Next.js and React** on the frontend, **Node.js with PostgreSQL** on the backend.',
-      'Built **third-party API integrations**, including **OAuth flows**, **webhook handling** and scheduled **background jobs with durable retries**.',
-      'Worked with clients and a small product team to **scope features and ship releases**.',
+      'Ship client web products **end to end** in TypeScript: **Next.js and React** on the frontend, **Node.js and PostgreSQL** on the backend, covering API design, background jobs, integrations and production UI.',
+      'Build **third-party integrations**: **OAuth flows**, **webhook handling** and scheduled **background jobs with durable retries**.',
+      'Work directly with clients and a small product team to **scope features, split ownership and deliver production releases**. Selected work is on the tickets below.',
     ],
   },
   {
@@ -52,122 +52,131 @@ export const JOURNEY: Role[] = [
     org: 'Sixlogics',
     tag: 'Intern → Full-time · On-site',
     bullets: [
-      'Started as an **intern** and moved into a **full-time role**.',
-      'Built features with **PHP and Laravel** on the backend and **React** on the frontend, against a **REST API**.',
-      'Contributed to an **existing production codebase**.',
+      'Started as an **intern** and moved into a **full-time** Associate Software Engineer role on existing production web applications.',
+      'Built and maintained features with **PHP and Laravel** on the backend and **React** on the frontend, integrating **REST APIs** within an established production codebase.',
     ],
   },
   {
-    when: '2021 — 2025',
+    when: 'Sep 2021 — May 2025',
     title: 'BS, Computer Science',
     org: 'FAST NUCES, Lahore',
     tag: 'Degree',
-    bullets: ['Foundations in **algorithms, systems and software engineering**, Lahore, Pakistan.'],
+    bullets: ['National University of Computer and Emerging Sciences, Lahore, Pakistan.'],
     stamp: { big: 'GRAD', small: 'Class of 2025' },
-  },
-  {
-    when: '2019 — 2021',
-    title: 'Intermediate, Pre-Engineering',
-    org: 'Government College University',
-    tag: 'College',
-    bullets: ['Mathematics and physics track, Lahore, Pakistan.'],
   },
 ];
 
 export type Project = {
   title: string;
   line: string;
+  /** Where/when, e.g. "RipeSeed · 2026". */
+  meta: string;
   description: string;
-  image: string;
+  /** Screenshot; client work without one gets a drawn flow map from `flow`. */
+  image?: string;
+  flow?: string[];
   tech: string[];
-  github: string;
-  demo: string;
-  color: 'pink' | 'lime' | 'cyan' | 'blue';
+  github?: string;
+  demo?: string;
+  color: 'accent' | 'signal' | 'sky' | 'deep';
   built: string[];
-  host: string;
+  host?: string;
 };
 
 export const PROJECTS: Project[] = [
   {
+    title: 'ClarityHero',
+    line: 'Decision intelligence · AI',
+    meta: 'RipeSeed · 2026',
+    description:
+      'Connects read-only to a founder’s email, chat, CRM and accounting data and returns a short, ranked daily briefing instead of a dashboard.',
+    flow: ['Gmail / Outlook', 'OAuth sync', 'Inngest jobs', 'LLM ranking', 'Briefing'],
+    tech: ['Next.js', 'TypeScript', 'Node.js', 'PostgreSQL', 'Inngest', 'LLM APIs'],
+    color: 'accent',
+    built: [
+      'Built the **AI pipeline** that distills raw messages and records into **ranked decisions and risks**, orchestrating multi-step **LLM jobs with Inngest** for scheduled runs and durable retries.',
+      'Implemented the **Gmail and Outlook integrations** end to end: **OAuth consent, token refresh** and incremental read-only sync of recent mail.',
+      'Built the **Next.js frontend** and the delivery layer that ships each briefing **in-app, by email and to Slack**.',
+    ],
+  },
+  {
+    title: 'Dialpad–Quickbase Integration',
+    line: 'Integration',
+    meta: 'RipeSeed · 2026',
+    description:
+      'Syncs call and contact activity from Dialpad into Quickbase records, removing manual data entry from the client’s daily workflow.',
+    flow: ['Dialpad', 'Webhook', 'Map fields', 'Retry', 'Quickbase'],
+    tech: ['TypeScript', 'Node.js', 'REST APIs', 'Webhooks'],
+    color: 'signal',
+    built: [
+      'Synced call and contact activity into Quickbase records through **webhooks and REST APIs**.',
+      'Handled **field mapping** between the two data models.',
+      'Added **retries and error handling** for failed webhook deliveries.',
+    ],
+  },
+  {
+    title: 'Roofing Operations Platform',
+    line: 'Operations platform',
+    meta: 'RipeSeed · 2026',
+    description: 'A roofing-industry platform: a Next.js frontend backed by a REST API.',
+    flow: ['Lead capture', 'REST API', 'Typed client', 'Next.js UI', 'Status'],
+    tech: ['Next.js', 'TypeScript', 'REST APIs'],
+    color: 'sky',
+    built: [
+      'Own the **Next.js frontend** of the platform.',
+      'Built **lead management** end to end: capture, filterable listing, detail view and status updates.',
+      'Worked against the backend **REST API** with **typed clients** and **reusable components**.',
+    ],
+  },
+  {
     title: 'Hirrd',
     line: 'Job portal',
+    meta: 'Personal · 2025',
     description:
-      'Candidates browse and apply to roles while recruiters post and manage listings, with Clerk auth, role-based access and saved jobs.',
+      'Full-stack job portal with separate candidate and recruiter roles: onboarding, job posting, applications and saved jobs.',
     image: '/images/hirrd.jpg',
-    tech: ['React', 'Tailwind CSS', 'Supabase', 'Clerk'],
+    tech: ['React', 'Tailwind CSS', 'shadcn/ui', 'Supabase', 'Clerk'],
     github: 'https://github.com/muhammadusman586/jobportal',
     demo: 'https://hirrd-lyart.vercel.app/',
-    color: 'pink',
+    color: 'deep',
     built: [
-      'Candidate flow to **browse roles, apply** and **save jobs**.',
-      'Recruiter flow to **post and manage listings**.',
-      '**Clerk** authentication with **role-based access** for candidates and recruiters.',
-      'Data and storage on **Supabase**.',
-    ],
-    host: 'Vercel',
-  },
-  {
-    title: 'Pizzeria',
-    line: 'Food ordering',
-    description:
-      'Order pizzas with a cart, auth and an admin dashboard, built end-to-end on the MERN stack.',
-    image: '/images/pizza.jpg',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express'],
-    github: 'https://github.com/muhammadusman586/Pizzeria',
-    demo: 'https://pizzeria-murex.vercel.app/',
-    color: 'lime',
-    built: [
-      'Menu and **cart** with **pizza customisation** and a live order summary.',
-      '**Auth** plus an **admin dashboard** for managing orders.',
-      'Built end-to-end on the **MERN** stack.',
-    ],
-    host: 'Vercel',
-  },
-  {
-    title: 'Connect Devs',
-    line: 'Dev social network',
-    description: 'Discover developers, swipe to connect and build your network.',
-    image: '/images/ConnectDevs.jpeg',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express'],
-    github: 'https://github.com/muhammadusman586/ConnectDevs',
-    demo: 'https://connectdevs.vercel.app/',
-    color: 'cyan',
-    built: [
-      'Developer **profiles** with profile management.',
-      '**Swipe to connect**: send and accept connection requests.',
-      'Manage your **professional network** in one place.',
+      'Implemented **authentication and role-based access** with **Clerk** for candidates and recruiters.',
+      'Modelled **jobs and applications** in **Supabase**.',
+      'Added **search and filtering** by role, company and location.',
     ],
     host: 'Vercel',
   },
 ];
 
 export const LINES: { name: string; code: string; color: string; stops: string[] }[] = [
-  { name: 'Frontend', code: 'F', color: '#FF3EA5', stops: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'] },
-  { name: 'Backend', code: 'B', color: '#2D4BFF', stops: ['Node.js', 'Express', 'PHP / Laravel', 'REST APIs'] },
-  { name: 'Integrations', code: 'I', color: '#FFB938', stops: ['OAuth', 'Webhooks', 'Third-party APIs', 'Background jobs'] },
-  { name: 'Data', code: 'D', color: '#E6FF00', stops: ['PostgreSQL', 'MongoDB', 'Supabase'] },
-  { name: 'Cloud & Ops', code: 'C', color: '#B07CFF', stops: ['AWS', 'Docker', 'Vercel'] },
-  { name: 'Tools', code: 'T', color: '#7AF7FF', stops: ['Linux / Bash', 'Git', 'GitHub'] },
+  // Northern-line black: ink stays dark in every theme, and the map card is always light.
+  { name: 'Languages', code: 'L', color: '#111111', stops: ['TypeScript', 'JavaScript', 'SQL', 'HTML / CSS'] },
+  { name: 'Frontend', code: 'F', color: 'rgb(var(--accent))', stops: ['React', 'Next.js', 'Tailwind CSS', 'shadcn/ui', 'React Hook Form'] },
+  { name: 'Backend', code: 'B', color: 'rgb(var(--deep))', stops: ['Node.js', 'Express', 'PHP / Laravel', 'REST APIs'] },
+  { name: 'Integrations & AI', code: 'I', color: 'rgb(var(--alt))', stops: ['OAuth', 'Webhooks', 'Third-party APIs', 'Inngest', 'LLM APIs'] },
+  { name: 'Data', code: 'D', color: 'rgb(var(--signal))', stops: ['PostgreSQL', 'MongoDB', 'Prisma', 'Supabase'] },
+  { name: 'Cloud & Ops', code: 'C', color: '#B07CFF', stops: ['AWS', 'Docker', 'Vercel', 'Linux / Bash'] },
+  { name: 'Tools', code: 'T', color: 'rgb(var(--sky))', stops: ['Git', 'GitHub', 'Postman', 'Jira'] },
 ];
 
 /** Where each Line Map stop shows up (project titles or employer names). Empty = general toolkit. */
 export const USED_IN: Record<string, string[]> = {
-  React: ['RipeSeed', 'Sixlogics', 'Hirrd', 'Pizzeria', 'Connect Devs'],
-  'Next.js': ['RipeSeed'],
-  TypeScript: ['RipeSeed'],
+  TypeScript: ['RipeSeed', 'ClarityHero', 'Dialpad–Quickbase Integration', 'Roofing Operations Platform'],
+  React: ['RipeSeed', 'Sixlogics', 'Hirrd'],
+  'Next.js': ['RipeSeed', 'ClarityHero', 'Roofing Operations Platform'],
   'Tailwind CSS': ['Hirrd'],
-  'Node.js': ['RipeSeed', 'Pizzeria', 'Connect Devs'],
-  Express: ['Pizzeria', 'Connect Devs'],
+  'shadcn/ui': ['Hirrd'],
+  'Node.js': ['RipeSeed', 'ClarityHero', 'Dialpad–Quickbase Integration'],
   'PHP / Laravel': ['Sixlogics'],
-  'REST APIs': ['Sixlogics'],
-  OAuth: ['RipeSeed'],
-  Webhooks: ['RipeSeed'],
-  'Third-party APIs': ['RipeSeed'],
-  'Background jobs': ['RipeSeed'],
-  PostgreSQL: ['RipeSeed'],
-  MongoDB: ['Pizzeria', 'Connect Devs'],
+  'REST APIs': ['Sixlogics', 'Dialpad–Quickbase Integration', 'Roofing Operations Platform'],
+  OAuth: ['ClarityHero', 'RipeSeed'],
+  Webhooks: ['Dialpad–Quickbase Integration', 'RipeSeed'],
+  'Third-party APIs': ['ClarityHero', 'Dialpad–Quickbase Integration'],
+  Inngest: ['ClarityHero'],
+  'LLM APIs': ['ClarityHero'],
+  PostgreSQL: ['RipeSeed', 'ClarityHero'],
   Supabase: ['Hirrd'],
-  Vercel: ['Hirrd', 'Pizzeria', 'Connect Devs'],
+  Vercel: ['Hirrd'],
 };
 
 /** The "How I ship" route. Only tools listed elsewhere on the site. */

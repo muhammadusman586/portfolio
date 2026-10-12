@@ -15,8 +15,11 @@ No test suite is configured.
 
 React 18 + TypeScript SPA built with Vite. Tailwind CSS for styling,
 Framer Motion for all animation (wrapped in `MotionConfig reducedMotion="user"`).
-Day theme by default; night mode = `.dark` on `<html>` (toggle in `Navbar`,
-saved in localStorage, applied pre-paint by a script in `index.html`).
+Colour: `data-theme` on `<html>` picks a line theme (poster default, london,
+tokyo, nyc via `ThemePicker`); `.dark` on `<html>` is night mode (Navbar
+toggle). Defaults: night mode + NYC Subway + sound on (sound waits for the
+first click/keypress). Visitor choices are saved in localStorage and applied
+pre-paint by a script in `index.html`.
 
 **Theme:** the page is a metro ride. Each section is a numbered "Station"
 (`StationHeader` in `src/components/ui.tsx`). `MetroRail.tsx` is the fixed
@@ -45,9 +48,13 @@ If moving to env vars, Vite exposes them via `import.meta.env.VITE_*`.
 ## Design System
 
 Poster / neo-brutalist. Tokens in `tailwind.config.js`:
-bg/fg are CSS vars that flip at night (`text-fg` for text on the page,
-`text-ink` inside cards/coloured fills); paper `#F7F6F1`, ink `#111`, pink `#FF3EA5`, lime `#E6FF00`,
-blue `#2D4BFF`, cyan `#7AF7FF`, board `#16231d`, amber `#FFB938`.
+theme tokens are RGB-triplet CSS vars in `src/index.css`: `accent`,
+`signal` (always with dark text), `deep` (always with light text), `sky`,
+`alt` (Integrations line only), `board`, plus `bg`/`fg` which flip at night (`text-fg` on the page,
+`text-ink` inside cards/coloured fills). Fixed: paper `#F7F6F1`, ink `#111`,
+amber `#FFB938`. Never hard-code theme hex in components; use the token
+classes or `rgb(var(--accent))`. Adding a theme = one `[data-theme]` block
+in index.css + an entry in `ThemePicker.tsx`.
 Fonts: Bowlby One (`font-display`), Archivo (`font-sans`),
 IBM Plex Mono (`font-mono`), Permanent Marker (`font-marker`).
 Thick ink borders, hard offset shadows (`shadow-hard*`), no rounded cards.

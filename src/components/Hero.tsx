@@ -5,7 +5,7 @@ import { LINKS } from '../data';
 import { play } from '../sound';
 import Train from './Train';
 
-const DESTINATIONS = ['SOFTWARE ENGINEER', 'NEXT.JS + REACT', 'NODE + EXPRESS', 'OAUTH + WEBHOOKS', 'SAAS PRODUCTS'];
+const DESTINATIONS = ['SOFTWARE ENGINEER', 'NEXT.JS + REACT', 'NODE + POSTGRES', 'OAUTH + WEBHOOKS', 'LLM PIPELINES'];
 const WIDTH = 19;
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.';
 
@@ -118,7 +118,7 @@ const Hero = () => {
             <motion.li
               key={c}
               variants={{ hidden: { opacity: 0, y: -12 }, show: { opacity: 1, y: 0 } }}
-              className={`label ${i === 1 ? 'bg-lime' : ''}`}
+              className={`label ${i === 1 ? 'bg-signal' : ''}`}
             >
               {c}
             </motion.li>
@@ -147,7 +147,7 @@ const Hero = () => {
             animate={{ scale: 1, rotate: -6 }}
             transition={{ type: 'spring', stiffness: 260, damping: 12, delay: 0.7 }}
             style={{ x: '25%' }}
-            className="absolute -top-8 right-0 border-[3px] border-ink bg-pink text-ink px-3 py-1 font-display text-[clamp(1rem,3vw,2.25rem)] leading-none shadow-hard sm:-top-14"
+            className="absolute -top-8 right-0 border-[3px] border-ink bg-accent text-ink px-3 py-1 font-display text-[clamp(1rem,3vw,2.25rem)] leading-none shadow-hard sm:-top-14"
           >
             MUHAMMAD
           </motion.span>
@@ -173,7 +173,7 @@ const Hero = () => {
                   initial={{ opacity: 0, scale: 0.4, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.4 }}
-                  className="absolute -top-10 right-2 rotate-6 whitespace-nowrap border-2 border-ink bg-lime px-2 py-0.5 font-marker text-sm text-ink"
+                  className="absolute -top-10 right-2 rotate-6 whitespace-nowrap border-2 border-ink bg-signal px-2 py-0.5 font-marker text-sm text-ink"
                 >
                   toot toot!
                 </motion.span>
@@ -190,7 +190,7 @@ const Hero = () => {
               integration-heavy parts:{' '}
               <span className="hl">OAuth, webhooks and background jobs that keep working when a third-party API doesn’t</span>.
             </p>
-            <a href="#about" className="mt-6 inline-flex -rotate-3 items-center gap-1 font-marker text-lg text-pink">
+            <a href="#about" className="mt-6 inline-flex -rotate-3 items-center gap-1 font-marker text-lg text-accent">
               scroll to board <ArrowDown size={18} className="animate-bounce" />
             </a>
           </motion.div>
@@ -204,7 +204,7 @@ const Hero = () => {
             <div className="border-[3px] border-ink bg-board p-4 shadow-hard">
               <div className="mb-3 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-paper/70">
                 <span>Next departure</span>
-                <span className="text-lime">Platform 1</span>
+                <span className="text-signal">Platform 1</span>
               </div>
               <SplitFlap text={DESTINATIONS[dest]} />
               {lastPush && (
@@ -212,15 +212,15 @@ const Hero = () => {
                   href={`${LINKS.github}/${lastPush.repo}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring mt-3 flex items-center gap-2 border-t border-dashed border-paper/30 pt-3 font-mono text-[11px] uppercase tracking-wider text-paper/80 hover:text-lime"
+                  className="focus-ring mt-3 flex items-center gap-2 border-t border-dashed border-paper/30 pt-3 font-mono text-[11px] uppercase tracking-wider text-paper/80 hover:text-signal"
                 >
-                  <span className="h-2 w-2 animate-blink rounded-full bg-lime" />
-                  Last departure: pushed to <span className="font-bold text-lime">{lastPush.repo}</span> · {ago(lastPush.when)}
+                  <span className="h-2 w-2 animate-blink rounded-full bg-signal" />
+                  Last departure: pushed to <span className="font-bold text-signal">{lastPush.repo}</span> · {ago(lastPush.when)}
                 </a>
               )}
             </div>
             <div className="mt-6 flex flex-wrap gap-4">
-              <a href="#projects" className="btn focus-ring bg-pink">See my work</a>
+              <a href="#projects" className="btn focus-ring bg-accent">See my work</a>
               <a href={LINKS.resume} download className="btn focus-ring bg-paper">
                 <FileDown size={16} /> Résumé
               </a>
@@ -230,13 +230,13 @@ const Hero = () => {
       </div>
 
       {/* marquee strip */}
-      <div className="absolute inset-x-0 bottom-0 -rotate-1 overflow-hidden border-y-[3px] border-ink bg-lime py-2 text-ink">
+      <div className="absolute inset-x-0 bottom-0 -rotate-1 overflow-hidden border-y-[3px] border-ink bg-signal py-2 text-ink">
         <div className="flex w-max animate-marquee font-mono text-sm font-bold uppercase tracking-[0.25em]">
           {Array.from({ length: 2 }, (_, k) => (
             <span key={k} aria-hidden={k === 1} className="flex shrink-0">
-              {['Mind the gap', 'Now boarding', 'Next.js', 'Node.js', 'MongoDB', 'PostgreSQL', 'TypeScript'].map((w) => (
+              {['Mind the gap', 'Now boarding', 'TypeScript', 'Next.js', 'Node.js', 'PostgreSQL', 'Inngest', 'LLM APIs'].map((w) => (
                 <span key={w} className="px-6">
-                  {w} <span className="text-pink">✦</span>
+                  {w} <span className="text-accent">✦</span>
                 </span>
               ))}
             </span>

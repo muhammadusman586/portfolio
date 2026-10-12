@@ -1,11 +1,11 @@
-// Tiny Web Audio synth: no audio files. Muted by default; the navbar toggle flips it.
+// Tiny Web Audio synth: no audio files. On by default; the navbar toggle mutes it.
 
 let ctx: AudioContext | null = null;
-let enabled = false;
+let enabled = true;
 try {
-  enabled = localStorage.getItem('sound') === 'on';
+  enabled = localStorage.getItem('sound') !== 'off';
 } catch {
-  /* storage blocked: stay muted */
+  /* storage blocked: keep the default */
 }
 
 export const isSoundOn = () => enabled;
@@ -40,7 +40,8 @@ const SOUNDS = {
 };
 
 export const play = (name: keyof typeof SOUNDS) => {
-  if (!enabled) return;
+  // Browsers block audio until the visitor clicks or types; stay silent until then.
+  if (!enabled || (navigator.userActivation && !navigator.userActivation.hasBeenActive)) return;
   ctx ??= new AudioContext();
   SOUNDS[name]();
 };

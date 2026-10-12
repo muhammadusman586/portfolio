@@ -132,7 +132,7 @@ const MetroRail = () => {
       {/* vertical rail, lg+ */}
       <nav aria-label="Sections" className="fixed right-8 top-[10vh] z-40 hidden h-[72vh] w-10 select-none lg:block">
         <div ref={railRef} className="absolute inset-y-0 left-1/2 w-[6px] -translate-x-1/2 bg-fg" />
-        <div className="absolute -bottom-7 left-1/2 h-4 w-8 -translate-x-1/2 border-2 border-ink bg-[repeating-linear-gradient(45deg,#111_0_5px,#E6FF00_5px_10px)]" />
+        <div className="absolute -bottom-7 left-1/2 h-4 w-8 -translate-x-1/2 border-2 border-ink bg-[repeating-linear-gradient(45deg,#111_0_5px,rgb(var(--signal))_5px_10px)]" />
 
         {STATIONS.map((s, i) => (
           <button
@@ -145,7 +145,7 @@ const MetroRail = () => {
           >
             <span
               className={`block rounded-full border-[3px] border-ink transition-all duration-300 ${
-                i === active ? 'h-6 w-6 bg-lime' : i < active ? 'h-4 w-4 bg-pink' : 'h-4 w-4 bg-paper'
+                i === active ? 'h-6 w-6 bg-signal' : i < active ? 'h-4 w-4 bg-accent' : 'h-4 w-4 bg-paper'
               }`}
             />
             <span
@@ -167,14 +167,14 @@ const MetroRail = () => {
         >
           <motion.div
             style={{ opacity: trail, scaleY: trail, x: '-50%' }}
-            className="absolute bottom-1/2 left-1/2 h-24 w-6 origin-bottom bg-[repeating-linear-gradient(90deg,#FF3EA5_0_2px,transparent_2px_6px)]"
+            className="absolute bottom-1/2 left-1/2 h-24 w-6 origin-bottom bg-[repeating-linear-gradient(90deg,rgb(var(--accent))_0_2px,transparent_2px_6px)]"
           />
           <Train className="relative w-[84px] rotate-90 drop-shadow-[2px_2px_0_#111]" />
           <AnimatePresence>
             {!grabbed && (
               <motion.span
                 exit={{ opacity: 0 }}
-                className="pointer-events-none absolute right-10 top-12 -rotate-6 whitespace-nowrap font-marker text-sm text-pink"
+                className="pointer-events-none absolute right-10 top-12 -rotate-6 whitespace-nowrap font-marker text-sm text-accent"
               >
                 grab me &amp; ride ↓
               </motion.span>
@@ -194,8 +194,8 @@ const MetroRail = () => {
               exit={{ opacity: 0, x: 20 }}
               className="absolute -bottom-6 right-12 w-max border-2 border-ink bg-paper px-3 py-2 font-mono text-[11px] text-ink shadow-hard-sm"
             >
-              Tip: press <kbd className="border border-ink bg-lime px-1 font-bold">J</kbd> /{' '}
-              <kbd className="border border-ink bg-lime px-1 font-bold">K</kbd> to hop stations
+              Tip: press <kbd className="border border-ink bg-signal px-1 font-bold">J</kbd> /{' '}
+              <kbd className="border border-ink bg-signal px-1 font-bold">K</kbd> to hop stations
             </motion.p>
           )}
         </AnimatePresence>
@@ -222,7 +222,7 @@ const MetroRail = () => {
             >
               <span
                 className={`block rounded-full border-[3px] border-ink ${
-                  i === active ? 'h-4 w-4 bg-lime' : i < active ? 'h-3 w-3 bg-pink' : 'h-3 w-3 bg-paper'
+                  i === active ? 'h-4 w-4 bg-signal' : i < active ? 'h-3 w-3 bg-accent' : 'h-3 w-3 bg-paper'
                 }`}
               />
             </button>
@@ -247,7 +247,7 @@ const MetroRail = () => {
             onClick={() => goTo('home')}
             aria-label="Back to departure"
             title="Back to departure"
-            className="btn focus-ring fixed bottom-[72px] right-4 z-40 h-11 w-11 justify-center bg-ink p-0 text-lime lg:bottom-4 lg:right-[30px]"
+            className="btn focus-ring fixed bottom-[72px] right-4 z-40 h-11 w-11 justify-center bg-ink p-0 text-signal lg:bottom-4 lg:right-[30px]"
           >
             <ArrowUp size={18} />
           </motion.button>
@@ -263,12 +263,12 @@ const MetroRail = () => {
             animate={{ opacity: 1, scale: 1, rotate: -3 }}
             exit={{ opacity: 0, y: -30, rotate: 4 }}
             transition={{ type: 'spring', stiffness: 380, damping: 20 }}
-            className="pointer-events-none fixed left-1/2 top-1/3 z-50 -ml-[min(45vw,210px)] w-[min(90vw,420px)] border-b-[6px] border-r-[6px] border-pink bg-ink px-6 py-4 text-center"
+            className="pointer-events-none fixed left-1/2 top-1/3 z-50 -ml-[min(45vw,210px)] w-[min(90vw,420px)] border-b-[6px] border-r-[6px] border-accent bg-ink px-6 py-4 text-center"
           >
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-paper">
               Now arriving · Station #{String(banner).padStart(2, '0')}
             </p>
-            <p className="font-display text-4xl uppercase leading-tight text-lime [text-shadow:3px_3px_0_#FF3EA5] sm:text-5xl">
+            <p className="font-display text-4xl uppercase leading-tight text-signal [text-shadow:3px_3px_0_rgb(var(--accent))] sm:text-5xl">
               {STATIONS[banner].label}
             </p>
           </motion.div>

@@ -7,6 +7,8 @@ import { StationHeader } from './ui';
 
 const isProject = (name: string) => PROJECTS.some((p) => p.title === name);
 const targetId = (name: string) => `${isProject(name) ? 'ticket' : 'role'}-${slug(name)}`;
+// The deep line colour is dark in every theme, so its labels need light text.
+const onDeep = (color: string) => (color.includes('--deep') || color === '#111111' ? 'text-paper' : '');
 
 /** Tech stack drawn as a transit map: each line is a domain, each stop a tool. Click a stop to see where it was used. */
 const Skills = () => {
@@ -16,7 +18,7 @@ const Skills = () => {
   return (
     <section id="skills" className="relative px-4 py-24 sm:px-6 lg:pr-32">
       <StationHeader num="04" title="Stack" tag="line map">
-        My tools as a transit map: six lines, every stop something I ship with. Click a stop to see where I used it.
+        My tools as a transit map: every line a domain, every stop something I ship with. Click a stop to see where I used it.
       </StationHeader>
 
       <div className="space-y-6 border-[3px] border-ink bg-paper p-5 text-ink shadow-hard-lg sm:p-8">
@@ -34,7 +36,7 @@ const Skills = () => {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
                 style={{ background: line.color }}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border-[3px] border-ink font-display text-lg"
+                className={`${onDeep(line.color)} grid h-10 w-10 shrink-0 place-items-center rounded-full border-[3px] border-ink font-display text-lg`}
               >
                 {line.code}
               </motion.span>
@@ -75,12 +77,12 @@ const Skills = () => {
                       >
                         <span
                           className={`relative z-10 block h-6 w-6 rounded-full border-[4px] border-ink transition-transform duration-200 group-hover:scale-150 ${
-                            on ? 'scale-150 bg-lime' : 'bg-paper group-hover:bg-lime'
+                            on ? 'scale-150 bg-signal' : 'bg-paper group-hover:bg-signal'
                           }`}
                         />
                         <span
-                          className={`mt-2 text-center text-[11px] font-bold leading-tight transition-colors group-hover:text-pink sm:text-sm ${
-                            on ? 'text-pink' : ''
+                          className={`mt-2 text-center text-[11px] font-bold leading-tight transition-colors group-hover:text-accent sm:text-sm ${
+                            on ? 'text-accent' : ''
                           }`}
                         >
                           {stop}
@@ -104,7 +106,7 @@ const Skills = () => {
                 exit={{ opacity: 0, y: -8 }}
                 className="flex flex-wrap items-center gap-2"
               >
-                <span style={{ background: picked.color }} className="border-2 border-ink px-2 py-1 font-display text-lg leading-none">
+                <span style={{ background: picked.color }} className={`${onDeep(picked.color)} border-2 border-ink px-2 py-1 font-display text-lg leading-none`}>
                   {picked.stop}
                 </span>
                 {USED_IN[picked.stop]?.length ? (
@@ -114,7 +116,7 @@ const Skills = () => {
                       <button
                         key={name}
                         onClick={() => flashTo(targetId(name))}
-                        className="focus-ring border-2 border-ink bg-paper px-2 py-1 font-mono text-xs font-bold uppercase shadow-hard-sm transition-transform hover:-translate-y-0.5 hover:bg-lime"
+                        className="focus-ring border-2 border-ink bg-paper px-2 py-1 font-mono text-xs font-bold uppercase shadow-hard-sm transition-transform hover:-translate-y-0.5 hover:bg-signal"
                       >
                         {isProject(name) ? 'Ticket · ' : 'Job · '}
                         {name}

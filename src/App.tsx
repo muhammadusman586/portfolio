@@ -31,7 +31,7 @@ function App() {
             Every train, ticket and stamp on this page is drawn in code. Psst: try typing “usman”.
           </p>
           <div className="flex items-center gap-3 font-mono text-xs">
-            <span className="grid h-9 w-9 place-items-center border-[3px] border-ink bg-pink font-display text-sm text-ink shadow-hard-sm">MU</span>
+            <span className="grid h-9 w-9 place-items-center border-[3px] border-ink bg-accent font-display text-sm text-ink shadow-hard-sm">MU</span>
             © {new Date().getFullYear()} Muhammad Usman Ramzan
           </div>
         </footer>
