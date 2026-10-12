@@ -1,0 +1,46 @@
+// Tiny Web Audio synth: no audio files. Muted by default; the navbar toggle flips it.
+
+let ctx: AudioContext | null = null;
+let enabled = false;
+try {
+  enabled = localStorage.getItem('sound') === 'on';
+} catch {
+  /* storage blocked: stay muted */
+}
+
+export const isSoundOn = () => enabled;
+
+export const setSound = (on: boolean) => {
+  enabled = on;
+  try {
+    localStorage.setItem('sound', on ? 'on' : 'off');
+  } catch {
+    /* ignore */
+  }
+};
+
+const tone = (freq: number, start: number, dur: number, type: OscillatorType = 'sine', gain = 0.15) => {
+  const c = ctx!;
+  const osc = c.createOscillator();
+  const g = c.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  g.gain.setValueAtTime(gain, c.currentTime + start);
+  g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + start + dur);
+  osc.connect(g).connect(c.destination);
+  osc.start(c.currentTime + start);
+  osc.stop(c.currentTime + start + dur);
+};
+
+const SOUNDS = {
+  // classic two-note station chime
+  chime: () => (tone(659, 0, 0.6), tone(523, 0.32, 0.8)),
+  punch: () => tone(180, 0, 0.08, 'square', 0.12),
+  toot: () => (tone(392, 0, 0.18, 'square', 0.06), tone(392, 0.24, 0.3, 'square', 0.06)),
+};
+
+export const play = (name: keyof typeof SOUNDS) => {
+  if (!enabled) return;
+  ctx ??= new AudioContext();
+  SOUNDS[name]();
+};

@@ -1,134 +1,74 @@
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Moon, Sun, Volume2, VolumeX } from 'lucide-react';
+import { isSoundOn, play, setSound } from '../sound';
 
-const NAV_ITEMS = [
-  { label: 'home', id: 'home' },
-  { label: 'about', id: 'about' },
-  { label: 'experience', id: 'experience' },
-  { label: 'skills', id: 'skills' },
-  { label: 'projects', id: 'projects' },
-  { label: 'contact', id: 'contact' },
-];
-
+/** Slim top bar: name, availability pill, night-service switch and sound toggle. */
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [active, setActive] = useState('home');
+  const [night, setNight] = useState(() => document.documentElement.classList.contains('dark'));
+  const [sound, setSoundState] = useState(isSoundOn);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-
-      const offset = window.scrollY + window.innerHeight * 0.35;
-      for (const item of NAV_ITEMS) {
-        const el = document.getElementById(item.id);
-        if (!el) continue;
-        const top = el.offsetTop;
-        const bottom = top + el.offsetHeight;
-        if (offset >= top && offset < bottom) {
-          setActive(item.id);
-          break;
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
+  const toggleNight = () => {
+    const next = !night;
+    setNight(next);
+    document.documentElement.classList.toggle('dark', next);
+    try {
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+    } catch {
+      /* storage blocked: choice lasts this visit only */
     }
   };
 
+  const toggleSound = () => {
+    setSound(!sound);
+    setSoundState(!sound);
+    if (!sound) play('chime');
+  };
+
   return (
-    <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-bg/80 backdrop-blur-md border-b border-border'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <header className="fixed inset-x-0 top-0 z-40 bg-bg/80 backdrop-blur-sm">
+      <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <a href="#home" className="focus-ring font-mono text-xs font-bold uppercase tracking-[0.15em]">
+          Muhammad Usman <span className="text-pink">/</span> <span className="hidden sm:inline">Portfolio</span>
+        </a>
+        <div className="flex items-center gap-2 lg:mr-20">
+          <span className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-lime md:flex">
+            <span className="h-2 w-2 animate-blink rounded-full bg-lime" />
+            Now boarding: software engineer roles
+          </span>
+
           <button
-            onClick={() => scrollToSection('home')}
-            className="font-mono text-sm flex items-center gap-2 focus-ring rounded-md px-1"
+            onClick={toggleSound}
+            aria-pressed={sound}
+            aria-label={sound ? 'Mute station sounds' : 'Play station sounds'}
+            title={sound ? 'Sound on' : 'Sound off'}
+            className="focus-ring grid h-9 w-9 place-items-center border-2 border-ink bg-paper text-ink shadow-hard-sm"
           >
-            <span className="text-accent">$</span>
-            <span className="text-body">usman</span>
-            <span className="text-muted">@</span>
-            <span className="text-body">portfolio</span>
-            <span className="text-accent animate-blink">▋</span>
+            {sound ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
 
-          <div className="hidden md:flex items-center gap-1 font-mono text-sm">
-            {NAV_ITEMS.map((item) => {
-              const isActive = active === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`relative px-3 py-1.5 rounded-md transition-colors focus-ring ${
-                    isActive
-                      ? 'text-accent'
-                      : 'text-muted hover:text-body'
-                  }`}
-                >
-                  <span className="text-muted/60">./</span>
-                  {item.label}
-                  {isActive && (
-                    <span className="absolute left-3 right-3 -bottom-0.5 h-px bg-accent shadow-glow-sm" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label={isOpen ? 'close menu' : 'open menu'}
-              className="inline-flex items-center justify-center p-2 rounded-md text-muted hover:text-accent focus-ring"
+          {/* light-switch styled toggle */}
+          <button
+            onClick={toggleNight}
+            role="switch"
+            aria-checked={night}
+            aria-label="Night service"
+            title={night ? 'Night service' : 'Day service'}
+            className="focus-ring relative flex h-9 w-[68px] items-center border-2 border-ink bg-paper px-1 shadow-hard-sm"
+          >
+            <span className="absolute left-2 text-ink"><Sun size={14} /></span>
+            <span className="absolute right-2 text-ink"><Moon size={14} /></span>
+            <motion.span
+              layout
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              className={`relative z-10 grid h-6 w-7 place-items-center border-2 border-ink ${night ? 'ml-auto bg-blue text-lime' : 'bg-lime text-ink'}`}
             >
-              {isOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
+              {night ? <Moon size={12} /> : <Sun size={12} />}
+            </motion.span>
+          </button>
         </div>
       </div>
-
-      {isOpen && (
-        <div className="md:hidden mx-4 mb-4 rounded-2xl bg-surface border border-border shadow-term overflow-hidden">
-          <div className="flex items-center gap-1.5 px-4 py-3 bg-elevated border-b border-border">
-            <span className="h-2.5 w-2.5 rounded-full bg-term-red/90" />
-            <span className="h-2.5 w-2.5 rounded-full bg-term-yellow/90" />
-            <span className="h-2.5 w-2.5 rounded-full bg-term-green/90" />
-            <span className="flex-1 text-center font-mono text-xs text-muted">menu.sh</span>
-            <span className="w-8" />
-          </div>
-          <ul className="p-3 font-mono text-sm">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => scrollToSection(item.id)}
-                  className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
-                    active === item.id
-                      ? 'text-accent bg-accent/5'
-                      : 'text-muted hover:text-body hover:bg-elevated'
-                  }`}
-                >
-                  <span className="text-accent mr-2">$</span>
-                  cd ./{item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </nav>
+    </header>
   );
 };
 

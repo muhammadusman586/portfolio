@@ -1,186 +1,91 @@
 import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Briefcase, ExternalLink } from 'lucide-react';
-import TerminalWindow from './TerminalWindow';
+import { ArrowUpRight } from 'lucide-react';
+import { JOURNEY, slug } from '../data';
+import { Rich, StationHeader } from './ui';
 
-type Role = {
-  company: string;
-  title: string;
-  type: string;
-  period: string;
-  current?: boolean;
-  location?: string;
-  summary?: string;
-  bullets?: string[];
-  stack?: string[];
-  link?: string;
-};
+/** Rubber stamp that thuds onto the row when it scrolls into view. */
+const Stamp = ({ big, small, id }: { big: string; small: string; id: string }) => (
+  <motion.svg
+    viewBox="0 0 120 120"
+    aria-label={`${big} ${small}`}
+    initial={{ scale: 2.4, opacity: 0, rotate: -40 }}
+    whileInView={{ scale: 1, opacity: 0.9, rotate: -14 }}
+    viewport={{ once: true, amount: 1 }}
+    transition={{ type: 'spring', stiffness: 500, damping: 18, delay: 0.25 }}
+    className="pointer-events-none absolute right-4 top-6 hidden w-28 text-pink md:block lg:right-8 lg:w-32"
+  >
+    <defs>
+      <path id={id} d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0" />
+    </defs>
+    <circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" strokeWidth="4" />
+    <circle cx="60" cy="60" r="36" fill="none" stroke="currentColor" strokeWidth="2" />
+    <text fill="currentColor" fontFamily="IBM Plex Mono" fontSize="9" fontWeight="700" letterSpacing="3">
+      <textPath href={`#${id}`}>MU METRO · JOURNEY LOG · MU METRO · JOURNEY LOG ·</textPath>
+    </text>
+    <text x="60" y="62" textAnchor="middle" fill="currentColor" fontFamily="Bowlby One" fontSize="20">{big}</text>
+    <text x="60" y="76" textAnchor="middle" fill="currentColor" fontFamily="IBM Plex Mono" fontSize="7" fontWeight="700">
+      {small.toUpperCase()}
+    </text>
+  </motion.svg>
+);
 
-const roles: Role[] = [
-  {
-    company: 'RipeSeed',
-    title: 'Associate Software Engineer',
-    type: 'Full-time',
-    period: 'Aug 2025 — Present',
-    current: true,
-    summary:
-      'RipeSeed is an engineering-excellence firm building SaaS products for global clients.',
-    bullets: [
-      'Delivered full-stack features on client products using Next.js, React, Node.js, and MongoDB/PostgreSQL.',
-      'Shipped merged PRs to open-source projects — Google\u2019s Gemini CLI and Open Mercato — resolving cross-platform bugs, validation flows, and authorization handling.',
-      'Worked end-to-end: schema design, API layer, UI, and deploy.',
-    ],
-    stack: ['Next.js', 'React', 'Node.js', 'Express', 'MongoDB', 'SQL', 'TypeScript'],
-    link: 'https://ripeseed.io',
-  },
-  {
-    company: 'Sixlogics',
-    title: 'Associate Software Engineer',
-    type: 'Full-time · On-site',
-    period: 'Mar 2025 — Aug 2025',
-    bullets: [
-      'Built and maintained full-stack web applications as part of a product engineering team.',
-      'Collaborated across frontend and backend on feature delivery and code reviews.',
-    ],
-    stack: ['React', 'Node.js', 'Express', 'MongoDB'],
-  },
-];
+const Experience = () => (
+  <section id="experience" className="relative px-4 py-24 sm:px-6 lg:pr-32">
+    <StationHeader num="02" title="Experience" tag="journey log">
+      Every stop so far, and what I shipped there.
+    </StationHeader>
 
-const Experience = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-
-  return (
-    <section id="experience" className="relative py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4 }}
-          className="space-y-2"
-        >
-          <div className="font-mono text-xs text-muted flex items-center gap-2">
-            <span className="text-accent">$</span>
-            <span>tail -f EXPERIENCE.log</span>
-          </div>
-          <h2 className="font-mono text-3xl sm:text-4xl font-bold text-body">
-            <span className="text-accent">#</span> experience
-          </h2>
-          <p className="text-muted text-sm max-w-2xl">
-            Shipping full-stack products, leaning into open source, and obsessing
-            over engineering quality.
-          </p>
-        </motion.div>
-
-        <div className="mt-10">
-          <TerminalWindow
-            title="EXPERIENCE.log"
-            motionProps={{
-              initial: { opacity: 0, y: 20 },
-              animate: inView ? { opacity: 1, y: 0 } : {},
-              transition: { duration: 0.5, delay: 0.15 },
-            }}
-          >
-            <ol className="relative">
-              <div className="absolute left-[9px] top-2 bottom-2 w-px bg-border" />
-
-              {roles.map((role, i) => (
-                <motion.li
-                  key={`${role.company}-${i}`}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.45, delay: 0.3 + i * 0.15 }}
-                  className="relative pl-9 pb-8 last:pb-0"
-                >
-                  <span
-                    className={`absolute left-0 top-1 flex items-center justify-center w-5 h-5 rounded-full border ${
-                      role.current
-                        ? 'bg-accent/10 border-accent text-accent'
-                        : 'bg-elevated border-border text-muted'
-                    }`}
-                  >
-                    <Briefcase size={10} />
-                  </span>
-
-                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <h3 className="text-base font-semibold text-body">
-                      {role.title}
-                    </h3>
-                    <span className="text-muted">@</span>
-                    {role.link ? (
-                      <a
-                        href={role.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-accent hover:underline underline-offset-4"
-                      >
-                        {role.company}
-                        <ExternalLink size={12} />
-                      </a>
-                    ) : (
-                      <span className="text-accent">{role.company}</span>
-                    )}
-                    {role.current && (
-                      <span className="ml-1 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] rounded-md border border-accent/40 bg-accent/10 text-accent">
-                        <span className="h-1 w-1 rounded-full bg-accent animate-pulse-dot" />
-                        current
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mt-0.5 text-xs text-muted">
-                    {role.type} <span className="text-border">·</span> {role.period}
-                  </div>
-
-                  {role.summary && (
-                    <p className="mt-3 text-sm text-muted leading-relaxed">
-                      {role.summary}
-                    </p>
-                  )}
-
-                  {role.bullets && (
-                    <ul className="mt-3 space-y-1.5 text-sm text-muted">
-                      {role.bullets.map((b, j) => (
-                        <li key={j} className="flex gap-2 leading-relaxed">
-                          <span className="text-accent mt-0.5">→</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {role.stack && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {role.stack.map((s) => (
-                        <span
-                          key={s}
-                          className="px-2 py-0.5 text-[11px] rounded-md border border-border bg-elevated text-accent/90"
-                        >
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </motion.li>
-              ))}
-            </ol>
-          </TerminalWindow>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.4, delay: 0.8 }}
-          className="mt-6 font-mono text-xs text-muted flex flex-wrap items-center gap-2"
-        >
-          <span className="text-accent">→</span>
-          <span>
-            open-source work: <span className="text-accent">11 PRs opened · 9 merged</span>{' '}
-            across Gemini CLI + Open Mercato
-          </span>
-        </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
+      className="border-[3px] border-ink bg-paper text-ink shadow-hard-lg"
+    >
+      <div className="hidden grid-cols-[170px_260px_1fr] gap-6 border-b-[3px] border-dashed border-paper bg-ink px-6 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-paper md:grid">
+        <span>When</span>
+        <span>Where</span>
+        <span>What landed</span>
       </div>
-    </section>
-  );
-};
+
+      {JOURNEY.map((r, i) => (
+        <motion.article
+          key={r.org}
+          id={`role-${slug(r.org)}`}
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.45, delay: 0.05 * i }}
+          className="group relative grid gap-4 border-b-[3px] border-dashed border-ink/80 px-6 py-7 transition-colors last:border-b-0 hover:bg-[#fffde8] md:grid-cols-[170px_260px_1fr] md:gap-6 md:pr-40 lg:pr-48"
+        >
+          <span className="absolute inset-y-0 left-0 w-0 bg-pink transition-all duration-200 group-hover:w-2" />
+          <div className="font-mono text-sm font-semibold">
+            {r.when}{' '}
+            {r.current && <span className="ml-1 animate-blink bg-pink px-1.5 py-0.5 text-[10px] font-bold text-paper">NOW</span>}
+          </div>
+          <div>
+            <h3 className="text-lg font-extrabold leading-tight">{r.title}</h3>
+            {r.link ? (
+              <a href={r.link} target="_blank" rel="noopener noreferrer" className="focus-ring inline-flex items-center gap-0.5 text-sm text-muted underline underline-offset-2 hover:text-pink">
+                {r.org} <ArrowUpRight size={14} />
+              </a>
+            ) : (
+              <p className="text-sm text-muted">{r.org}</p>
+            )}
+            <span className="mt-3 block w-fit border-2 border-ink bg-lime px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest">
+              {r.tag}
+            </span>
+          </div>
+          <ul className="list-disc space-y-2 pl-5 leading-relaxed marker:text-pink">
+            {r.bullets.map((b) => (
+              <li key={b}><Rich text={b} /></li>
+            ))}
+          </ul>
+          {r.stamp && <Stamp {...r.stamp} id={`stamp-${i}`} />}
+        </motion.article>
+      ))}
+    </motion.div>
+  </section>
+);
 
 export default Experience;

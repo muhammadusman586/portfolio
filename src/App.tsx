@@ -1,37 +1,43 @@
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
+import MetroRail from './components/MetroRail';
 import Hero from './components/Hero';
 import About from './components/About';
 import Experience from './components/Experience';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
+import Skills from './components/Skills';
+import HowIShip from './components/HowIShip';
 import Contact from './components/Contact';
+import RushHour from './components/RushHour';
 
 function App() {
   return (
-    <div className="relative min-h-screen bg-bg text-body font-sans">
-      <div className="noise-overlay" aria-hidden="true" />
-      <div className="scanline-overlay" aria-hidden="true" />
-
-      <div className="relative z-10">
+    <MotionConfig reducedMotion="user">
+      {/* pb-14: room for the mobile bottom rail */}
+      <div className="relative min-h-screen overflow-x-clip pb-14 lg:pb-0">
         <Navbar />
-        <main>
+        <MetroRail />
+        <main className="mx-auto max-w-[1400px]">
           <Hero />
           <About />
           <Experience />
-          <Skills />
           <Projects />
+          <Skills />
+          <HowIShip />
           <Contact />
         </main>
-        <footer className="border-t border-border/60 py-8 mt-10">
-          <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-xs text-muted">
-            <span>
-              <span className="text-accent">$</span> exit 0
-            </span>
-            <span>© {new Date().getFullYear()} muhammad usman ramzan — built with react + vite</span>
+        <footer className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-4 border-t-[3px] border-fg px-4 py-8 sm:flex-row sm:items-center sm:px-6 lg:pr-32">
+          <p className="max-w-xs font-mono text-xs text-fg/60">
+            Every train, ticket and stamp on this page is drawn in code. Psst: try typing “usman”.
+          </p>
+          <div className="flex items-center gap-3 font-mono text-xs">
+            <span className="grid h-9 w-9 place-items-center border-[3px] border-ink bg-pink font-display text-sm text-ink shadow-hard-sm">MU</span>
+            © {new Date().getFullYear()} Muhammad Usman Ramzan
           </div>
         </footer>
+        <RushHour />
       </div>
-    </div>
+    </MotionConfig>
   );
 }
 

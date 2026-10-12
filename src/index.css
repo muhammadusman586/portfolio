@@ -1,91 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-  background: #0a0a0a;
+/* Day service by default; `.dark` on <html> is night service. Cards stay lit (paper + ink). */
+:root {
+  --bg: 238 236 230;
+  --fg: 17 17 17;
+  --shadow: #111111;
+  --dot: rgba(17, 17, 17, 0.07);
+  color-scheme: light;
+}
+.dark {
+  --bg: 15 16 26;
+  --fg: 238 236 230;
+  --shadow: #ff3ea5;
+  --dot: rgba(255, 255, 255, 0.07);
   color-scheme: dark;
 }
 
+html {
+  scroll-behavior: smooth;
+  background: rgb(var(--bg));
+}
+
 body {
-  @apply bg-bg text-body font-sans antialiased;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(0, 255, 127, 0.06), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(0, 255, 127, 0.04), transparent 60%);
-  background-attachment: fixed;
+  @apply bg-bg text-fg font-sans antialiased;
+  /* faint dot grid, like printed transit paper */
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 14px 14px;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* night service: train windows glow */
+.dark .train-win {
+  filter: drop-shadow(0 0 5px #7af7ff);
 }
 
 ::selection {
-  background: rgba(0, 255, 127, 0.25);
-  color: #ffffff;
+  background: #e6ff00;
+  color: #111111;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #1f1f1f;
-  border-radius: 8px;
-  border: 2px solid #0a0a0a;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #00cc66;
-}
+@layer components {
+  /* Big poster heading with an offset pink duplicate behind it */
+  .poster {
+    @apply font-display leading-[0.85] tracking-tight text-fg;
+    text-shadow: 0.06em 0.05em 0 #ff3ea5;
+  }
 
-.noise-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  mix-blend-mode: overlay;
-}
+  .sticker {
+    @apply inline-block border-[3px] border-ink bg-pink px-4 py-1 font-marker text-ink shadow-hard-sm;
+  }
 
-.scanline-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.025) 0 1px,
-    transparent 1px 3px
-  );
-}
+  .label {
+    @apply inline-block border-2 border-ink bg-paper px-3 py-1 font-mono text-ink text-[11px] font-semibold uppercase tracking-[0.18em];
+  }
 
-.terminal-caret::after {
-  content: '▋';
-  display: inline-block;
-  margin-left: 2px;
-  color: #00FF7F;
-  animation: caret 1s steps(2) infinite;
-}
+  /* Hard-shadow button that "presses" into its shadow */
+  .btn {
+    @apply inline-flex items-center gap-2 border-[3px] border-ink px-5 py-3 text-ink font-sans text-sm font-extrabold uppercase tracking-wider shadow-hard transition-[transform,box-shadow] duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard-lg active:translate-x-1.5 active:translate-y-1.5 active:shadow-none;
+  }
 
-.focus-ring {
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
-}
+  .hl {
+    @apply bg-lime font-semibold text-ink;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
 
-input,
-textarea {
-  @apply block w-full px-3 py-2 text-body bg-elevated border border-border rounded-lg font-mono text-sm placeholder:text-muted/60;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  .focus-ring {
+    @apply focus:outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-pink;
+  }
 }
-input:focus,
-textarea:focus {
-  @apply outline-none border-accent;
-  box-shadow: 0 0 0 3px rgba(0, 255, 127, 0.15);
-}
-
-.json-key { color: #a0a0a0; }
-.json-string { color: #00FF7F; }
-.json-punc { color: #ffffff; }
-.json-bracket { color: #ffffff; }
-.json-comment { color: #6a6a6a; font-style: italic; }

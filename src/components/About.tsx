@@ -1,198 +1,134 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import TerminalWindow from './TerminalWindow';
+import { useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { RotateCw } from 'lucide-react';
+import { StationHeader } from './ui';
 
-const education = [
-  {
-    degree: 'Bachelor of Science in Computer Science',
-    institution: 'FAST National University of Computer and Emerging Sciences, Lahore',
-    year: '2021 — 2025',
-    location: 'Lahore, Pakistan',
-  },
-  {
-    degree: 'Intermediate in Pre Engineering',
-    institution: 'Government College University',
-    year: '2019 — 2021',
-    location: 'Lahore, Pakistan',
-  },
+const FACTS = [
+  ['Home zone', 'Lahore, PK'],
+  ['Line', 'Full-stack'],
+  ['Stops at', 'TS · Next · Postgres'],
+  ['Specialty', 'Integrations'],
 ];
 
-const About = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+/** Photo ID styled as a transit pass: tilts toward the cursor, click to flip. */
+const MetroPass = () => {
+  const [flipped, setFlipped] = useState(false);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const flip = useSpring(0, { stiffness: 140, damping: 18 });
+  const rotateY = useTransform([mx, flip], ([x, f]: number[]) => x * 24 + f);
+  const rotateX = useTransform(my, [-0.5, 0.5], [12, -12]);
+
+  const toggle = () => {
+    setFlipped(!flipped);
+    flip.set(flipped ? 0 : 180);
+  };
 
   return (
-    <section id="about" className="relative py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto" ref={ref}>
-        <SectionHeader
-          prompt="cat ~/ABOUT_ME.md"
-          title="about_me"
-          inView={inView}
-        />
-
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-4"
-          >
-            <div className="relative mx-auto w-56 h-56 rounded-2xl overflow-hidden border border-border shadow-term group">
-              <img
-                src="/images/Usman.jpg"
-                alt="Muhammad Usman"
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="pointer-events-none absolute inset-0 ring-1 ring-accent/20 rounded-2xl" />
-              <div className="absolute bottom-2 left-2 right-2 font-mono text-[10px] text-muted bg-bg/70 backdrop-blur rounded-md px-2 py-1 flex items-center justify-between">
-                <span>usman.jpg</span>
-                <span className="text-accent">● online</span>
-              </div>
-            </div>
-
-            <div className="mt-4 font-mono text-xs text-muted text-center space-y-1">
-              <div>
-                <span className="text-accent">→</span> based in Lahore, PK
-              </div>
-              <div>
-                <span className="text-accent">→</span> open to opportunities
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="lg:col-span-8">
-            <TerminalWindow
-              title="ABOUT_ME.md"
-              prompt="vim ABOUT_ME.md"
-              motionProps={{
-                initial: { opacity: 0, y: 20 },
-                animate: inView ? { opacity: 1, y: 0 } : {},
-                transition: { duration: 0.5, delay: 0.15 },
-              }}
-            >
-              <div className="space-y-5 text-muted leading-relaxed">
-                <div className="text-accent"># Hello, world.</div>
-                <p>
-                  I build full-stack web products — fast, clean, and production-ready.
-                  Currently at{' '}
-                  <a
-                    href="https://ripeseed.io"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
-                  >
-                    RipeSeed
-                  </a>
-                  , an engineering-excellence firm where I work across the stack:
-                  React, Next.js, Node.js, Express, and MongoDB/SQL. I ship real
-                  features for real customers.
-                </p>
-                <p>
-                  Beyond client work, I contribute to open source — including{' '}
-                  <span className="text-body">Google&apos;s Gemini CLI</span> and{' '}
-                  <span className="text-body">Open Mercato</span>, with PRs merged
-                  into actively used systems. Open to full-stack roles at SaaS
-                  companies building ambitious products.
-                </p>
-                <div className="pt-3 border-t border-border/60">
-                  <div className="text-xs text-muted mb-2">
-                    <span className="text-accent">&gt;</span> stack:
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 text-xs">
-                    {[
-                      'Next.js',
-                      'React',
-                      'Node.js',
-                      'Express',
-                      'TypeScript',
-                      'MongoDB',
-                      'PostgreSQL',
-                    ].map((t) => (
-                      <span
-                        key={t}
-                        className="px-2 py-0.5 rounded-md bg-elevated border border-border text-accent/90"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </TerminalWindow>
+    <div className="[perspective:1200px]">
+      <motion.button
+        onClick={toggle}
+        onPointerMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          mx.set((e.clientX - r.left) / r.width - 0.5);
+          my.set((e.clientY - r.top) / r.height - 0.5);
+        }}
+        onPointerLeave={() => (mx.set(0), my.set(0))}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        className="focus-ring relative mx-auto block aspect-[3/4.2] w-full max-w-[320px] text-left"
+        aria-label={flipped ? 'Show pass front' : 'Show pass back'}
+      >
+        {/* front */}
+        <div className="absolute inset-0 flex flex-col border-[3px] border-ink bg-paper text-ink shadow-hard-lg [backface-visibility:hidden]">
+          <div className="flex items-center justify-between bg-blue px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-paper">
+            <span>MU Metro</span>
+            <span>Monthly pass</span>
+          </div>
+          <div className="relative m-4 mb-3 flex-1 overflow-hidden border-[3px] border-ink">
+            <img src="/images/Usman.jpg" alt="Muhammad Usman" loading="lazy" decoding="async" className="h-full w-full object-cover object-[50%_62%]" />
+            <span className="absolute bottom-2 right-2 -rotate-12 border-2 border-pink px-2 font-display text-sm text-pink">VALID</span>
+          </div>
+          <div className="px-4 pb-4">
+            <p className="font-display text-2xl leading-none">MUHAMMAD USMAN</p>
+            <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted">Software engineer · Zone LHR</p>
+            <div className="mt-3 h-6 bg-[repeating-linear-gradient(90deg,#111_0_2px,transparent_2px_4px,#111_4px_7px,transparent_7px_9px)]" />
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-10"
-        >
-          <TerminalWindow title="EDUCATION.yaml" prompt="cat EDUCATION.yaml">
-            <ul className="space-y-5">
-              {education.map((edu, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.4 + index * 0.15 }}
-                  className="group"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1.5 text-accent">-</span>
-                    <div className="flex-1 space-y-1">
-                      <div>
-                        <span className="text-muted">degree:</span>{' '}
-                        <span className="text-body">{edu.degree}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted">institution:</span>{' '}
-                        <span className="text-body">{edu.institution}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-x-6 gap-y-1">
-                        <span>
-                          <span className="text-muted">period:</span>{' '}
-                          <span className="text-accent">{edu.year}</span>
-                        </span>
-                        <span>
-                          <span className="text-muted">location:</span>{' '}
-                          <span className="text-body">{edu.location}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.li>
+        {/* back */}
+        <div className="absolute inset-0 flex flex-col justify-between border-[3px] border-ink bg-lime p-5 text-ink shadow-hard-lg [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <div>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em]">Passenger details</p>
+            <dl className="mt-4 space-y-3">
+              {FACTS.map(([k, v]) => (
+                <div key={k} className="border-b-2 border-dashed border-ink pb-2">
+                  <dt className="font-mono text-[10px] uppercase tracking-widest text-ink/70">{k}</dt>
+                  <dd className="font-display text-lg leading-tight">{v}</dd>
+                </div>
               ))}
-            </ul>
-          </TerminalWindow>
-        </motion.div>
-      </div>
-    </section>
+            </dl>
+          </div>
+          <p className="font-marker text-blue">valid for ambitious products →</p>
+        </div>
+      </motion.button>
+      <p className="mt-5 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-widest text-fg/60">
+        <RotateCw size={12} /> tap the pass to flip
+      </p>
+    </div>
   );
 };
 
-const SectionHeader = ({
-  prompt,
-  title,
-  inView,
-}: {
-  prompt: string;
-  title: string;
-  inView: boolean;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 16 }}
-    animate={inView ? { opacity: 1, y: 0 } : {}}
-    transition={{ duration: 0.4 }}
-    className="space-y-2"
-  >
-    <div className="font-mono text-xs text-muted flex items-center gap-2">
-      <span className="text-accent">$</span>
-      <span>{prompt}</span>
+const About = () => (
+  <section id="about" className="relative px-4 py-24 sm:px-6 lg:pr-32">
+    <StationHeader num="01" title="About" tag="metro pass">
+      Who’s riding, and where they’re headed.
+    </StationHeader>
+
+    <div className="grid items-center gap-14 lg:grid-cols-[340px_1fr]">
+      <MetroPass />
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6 }}
+        className="space-y-6 text-lg leading-relaxed"
+      >
+        <p className="text-2xl leading-snug">
+          I’m a full-stack engineer working in{' '}
+          <span className="hl">TypeScript, Next.js, React, Node.js and PostgreSQL</span>.
+        </p>
+        <p>
+          Most of my experience is in <strong>integration-heavy work</strong>: OAuth flows, third-party APIs,
+          webhooks and background jobs.
+        </p>
+        <p>
+          I care about <strong>clean data models</strong>, <strong>typed code</strong> and systems that{' '}
+          <strong>handle errors properly</strong> rather than only working on the happy path. I pick up new tools
+          quickly and I’m comfortable owning a feature from the API design through to the UI.
+        </p>
+        <p>CS from FAST Lahore, 2025.</p>
+        <div className="flex flex-wrap gap-3 pt-2">
+          {[
+            ['E2E', 'API design → UI'],
+            ['FAST', 'CS · 2025'],
+          ].map(([n, l], i) => (
+            <motion.div
+              key={l}
+              initial={{ scale: 0, rotate: -10 }}
+              whileInView={{ scale: 1, rotate: i % 2 ? 2 : -2 }}
+              viewport={{ once: true }}
+              transition={{ type: 'spring', stiffness: 300, damping: 14, delay: 0.2 + i * 0.1 }}
+              whileHover={{ rotate: 0, y: -4 }}
+              className="border-[3px] border-ink bg-paper px-4 py-2 text-ink shadow-hard-sm"
+            >
+              <span className="font-display text-3xl">{n}</span>{' '}
+              <span className="font-mono text-xs uppercase tracking-wider">{l}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
-    <h2 className="font-mono text-3xl sm:text-4xl font-bold text-body">
-      <span className="text-accent">#</span> {title}
-    </h2>
-  </motion.div>
+  </section>
 );
 
 export default About;
