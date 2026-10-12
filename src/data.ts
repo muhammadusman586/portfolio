@@ -1,6 +1,4 @@
-// All site content lives here so components stay presentational.
 
-/** Stable DOM id fragment, e.g. "Connect Devs" -> "connect-devs". */
 export const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export const STATIONS = [
@@ -10,6 +8,7 @@ export const STATIONS = [
   { id: 'projects', label: 'Tickets' },
   { id: 'skills', label: 'Line Map' },
   { id: 'ship', label: 'Deploy Line' },
+  { id: 'now', label: 'Now Boarding' },
   { id: 'contact', label: 'Terminus' },
 ] as const;
 
@@ -69,10 +68,8 @@ export const JOURNEY: Role[] = [
 export type Project = {
   title: string;
   line: string;
-  /** Where/when, e.g. "RipeSeed · 2026". */
   meta: string;
   description: string;
-  /** Screenshot; client work without one gets a drawn flow map from `flow`. */
   image?: string;
   flow?: string[];
   tech: string[];
@@ -149,7 +146,6 @@ export const PROJECTS: Project[] = [
 ];
 
 export const LINES: { name: string; code: string; color: string; stops: string[] }[] = [
-  // Northern-line black: ink stays dark in every theme, and the map card is always light.
   { name: 'Languages', code: 'L', color: '#111111', stops: ['TypeScript', 'JavaScript', 'SQL', 'HTML / CSS'] },
   { name: 'Frontend', code: 'F', color: 'rgb(var(--accent))', stops: ['React', 'Next.js', 'Tailwind CSS', 'shadcn/ui', 'React Hook Form'] },
   { name: 'Backend', code: 'B', color: 'rgb(var(--deep))', stops: ['Node.js', 'Express', 'PHP / Laravel', 'REST APIs'] },
@@ -159,7 +155,6 @@ export const LINES: { name: string; code: string; color: string; stops: string[]
   { name: 'Tools', code: 'T', color: 'rgb(var(--sky))', stops: ['Git', 'GitHub', 'Postman', 'Jira'] },
 ];
 
-/** Where each Line Map stop shows up (project titles or employer names). Empty = general toolkit. */
 export const USED_IN: Record<string, string[]> = {
   TypeScript: ['RipeSeed', 'ClarityHero', 'Dialpad–Quickbase Integration', 'Roofing Operations Platform'],
   React: ['RipeSeed', 'Sixlogics', 'Hirrd'],
@@ -179,7 +174,16 @@ export const USED_IN: Record<string, string[]> = {
   Vercel: ['Hirrd'],
 };
 
-/** The "How I ship" route. Only tools listed elsewhere on the site. */
+// Bump `updated` whenever the rows change.
+export const NOW = {
+  updated: 'Oct 2026',
+  rows: [
+    { status: 'Running', label: 'Building', text: 'AI briefing pipelines and third-party integrations at RipeSeed' },
+    { status: 'Arrived', label: 'Shipped', text: 'This portfolio: the metro edition, with four line themes' },
+    { status: 'Boarding', label: 'Looking for', text: 'Software engineer roles: full-stack, integrations, AI products' },
+  ],
+};
+
 export const SHIP_STEPS = [
   { stop: 'Commit', tools: ['Git', 'GitHub'], log: '$ git push origin main' },
   { stop: 'Checks', tools: ['TypeScript', 'ESLint'], log: '✓ typecheck + lint passed' },

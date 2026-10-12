@@ -6,10 +6,8 @@ import Train from './Train';
 const SECRET = 'usman';
 const TRAINS = 12;
 
-/** Fire from anywhere with `window.dispatchEvent(new Event('rushhour'))`. */
 const startRushHour = () => window.dispatchEvent(new Event('rushhour'));
 
-/** Easter egg: type "usman" (or click the hero train 5 times) and trains flood the screen. */
 const RushHour = () => {
   const [run, setRun] = useState(0);
   const [on, setOn] = useState(false);

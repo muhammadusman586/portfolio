@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import { ArrowUpRight, Check, FileText, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { LINKS } from '../data';
 import { StationHeader } from './ui';
@@ -13,9 +12,16 @@ const ROWS = [
   { Icon: FileText, label: 'Résumé', value: 'View PDF', href: LINKS.resume },
 ];
 
+// Must also be set in Vercel's project env vars, or the form can't send in production.
+const EMAILJS = {
+  service: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  template: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  key: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+};
+const MIN_FILL_MS = 3000;
+
 const CONFETTI = ['rgb(var(--accent))', 'rgb(var(--signal))', 'rgb(var(--deep))', 'rgb(var(--sky))', '#111111'];
 
-/** One-shot confetti burst; remount (via key) to fire again. */
 const Confetti = () => (
   <div aria-hidden className="pointer-events-none absolute left-1/2 top-0 z-30">
     {Array.from({ length: 48 }, (_, i) => {
@@ -57,14 +63,28 @@ const Contact = () => {
   const [status, setStatus] = useState<'success' | 'error' | null>(null);
   const [copied, setCopied] = useState(false);
   const [burst, setBurst] = useState(0);
+  const mountedAt = useRef(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formRef.current) return;
+    const form = formRef.current;
+    if (!form) return;
+    const succeed = () => (setStatus('success'), setBurst((b) => b + 1), form.reset());
+    // Spam trap: bots fill the hidden field or submit instantly. Pretend success, send nothing.
+    if ((form.elements.namedItem('website') as HTMLInputElement).value || Date.now() - mountedAt.current < MIN_FILL_MS) {
+      succeed();
+      return;
+    }
+    if (!EMAILJS.service || !EMAILJS.template || !EMAILJS.key) {
+      console.error('Contact form: VITE_EMAILJS_* env vars are missing, so messages cannot be sent.');
+      setStatus('error');
+      return;
+    }
     setSending(true);
     setStatus(null);
     try {
-      await emailjs.sendForm('service_ip9n0e7', 'template_d1u3qzb', formRef.current, 'Czzp5xYYvbGvfYqIq');
+      const { default: emailjs } = await import('@emailjs/browser');
+      await emailjs.sendForm(EMAILJS.service, EMAILJS.template, form, EMAILJS.key);
       setStatus('success');
       setBurst((b) => b + 1);
       formRef.current.reset();
@@ -87,7 +107,7 @@ const Contact = () => {
 
   return (
     <section id="contact" className="relative px-4 pb-16 pt-24 sm:px-6 lg:pr-32">
-      <StationHeader num="06" title="Contact" tag="terminus">
+      <StationHeader num="07" title="Contact" tag="terminus">
         Hiring a software engineer, or building something ambitious? Tell me what you’re working on.
       </StationHeader>
 
@@ -108,13 +128,12 @@ const Contact = () => {
           transition={{ type: 'spring', stiffness: 300, damping: 12, delay: 0.4 }}
           className="relative z-20 mx-auto -mb-6 w-fit border-b-[5px] border-r-[5px] border-accent bg-ink px-6 py-3 text-center"
         >
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-paper">Station #06 · end of the line</p>
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-paper">Station #07 · end of the line</p>
           <p className="bg-gradient-to-r from-accent via-signal to-sky bg-clip-text font-display text-3xl uppercase text-transparent sm:text-4xl">
             Terminus!
           </p>
         </motion.div>
 
-        {/* board with marquee bulbs */}
         <div className="relative border-[6px] border-[#e9dfc4] bg-board p-5 pt-10 shadow-hard-lg sm:p-8 sm:pt-12">
           <div aria-hidden className="absolute inset-x-6 -top-3 flex justify-between">
             {Array.from({ length: 16 }, (_, i) => (
@@ -166,22 +185,28 @@ const Contact = () => {
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 lg:pl-10">
               <p className="font-marker text-2xl text-signal">↪ Send a message</p>
+              {/* honeypot */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label>
+                  Website <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </label>
+              </div>
               {[
-                { name: 'name', label: 'Name', type: 'text', ph: 'Your name' },
-                { name: 'email', label: 'Email', type: 'email', ph: 'you@company.com' },
+                { name: 'name', label: 'Name', type: 'text', ph: 'Your name', max: 100 },
+                { name: 'email', label: 'Email', type: 'email', ph: 'you@company.com', max: 200 },
               ].map((f) => (
                 <label key={f.name} className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-accent">
                   <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
                     {f.label} <span className="text-accent">*</span>
                   </span>
-                  <input name={f.name} type={f.type} required placeholder={f.ph} className="block w-full bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
+                  <input name={f.name} type={f.type} required maxLength={f.max} placeholder={f.ph} className="block w-full bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
                 </label>
               ))}
               <label className="block border-[3px] border-ink bg-[#f3ead2] px-3 py-2 text-ink focus-within:outline focus-within:outline-[3px] focus-within:outline-accent">
                 <span className="font-mono text-[10px] font-bold uppercase tracking-widest">
                   Message <span className="text-accent">*</span>
                 </span>
-                <textarea name="message" required rows={4} placeholder="What are you building?" className="block w-full resize-y bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
+                <textarea name="message" required minLength={10} maxLength={5000} rows={4} placeholder="What are you building?" className="block w-full resize-y bg-transparent font-mono text-sm outline-none placeholder:text-ink/40" />
               </label>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <AnimatePresence mode="wait">
@@ -194,7 +219,7 @@ const Contact = () => {
                       role="status"
                       className={`font-mono text-xs font-bold uppercase ${status === 'success' ? 'text-signal' : 'text-accent'}`}
                     >
-                      {status === 'success' ? '✓ Delivered. I’ll reply soon.' : '✗ Send failed. Please retry.'}
+                      {status === 'success' ? '✓ Delivered. I’ll reply soon.' : '✗ Send failed. Please email me directly.'}
                     </motion.p>
                   )}
                 </AnimatePresence>

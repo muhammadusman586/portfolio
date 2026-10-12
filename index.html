@@ -8,12 +8,60 @@
       href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23FF3EA5' stroke='%23111' stroke-width='6'/><text x='50%25' y='56%25' font-family='Arial Black,sans-serif' font-size='26' font-weight='900' text-anchor='middle' dominant-baseline='middle' fill='%23111'>MU</text></svg>"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#080808" />
+    <meta name="theme-color" content="#F2F2F2" />
     <meta
       name="description"
       content="Muhammad Usman Ramzan — Software Engineer building full-stack products in TypeScript, Next.js, React, Node.js and PostgreSQL."
     />
     <title>Muhammad Usman — Software Engineer</title>
+    <link rel="canonical" href="https://muhammad-usman-ramzan.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://muhammad-usman-ramzan.vercel.app/" />
+    <meta property="og:title" content="Muhammad Usman — Software Engineer" />
+    <meta
+      property="og:description"
+      content="Full-stack products in TypeScript, Next.js, React, Node.js and PostgreSQL: integrations, background jobs and AI pipelines."
+    />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Muhammad Usman Ramzan",
+        "jobTitle": "Software Engineer",
+        "url": "https://muhammad-usman-ramzan.vercel.app/",
+        "image": "https://muhammad-usman-ramzan.vercel.app/images/Usman.jpg",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "RipeSeed",
+          "url": "https://ripeseed.io"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "National University of Computer and Emerging Sciences (FAST)"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lahore",
+          "addressCountry": "PK"
+        },
+        "sameAs": [
+          "https://github.com/muhammadusman586",
+          "https://linkedin.com/in/muhammadusman586"
+        ],
+        "knowsAbout": [
+          "TypeScript",
+          "Next.js",
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "OAuth",
+          "Webhooks",
+          "Inngest",
+          "LLM APIs"
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,15 +69,13 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Bowlby+One&family=IBM+Plex+Mono:wght@400;600;700&family=Permanent+Marker&display=swap"
     />
     <script>
-      // Apply theme before first paint to avoid a flash. Defaults: night mode + NYC Subway;
-      // a saved visitor choice wins.
+      // Runs before first paint to avoid a theme flash. Default: day mode + NYC Subway.
       var html = document.documentElement;
       try {
-        if (localStorage.getItem('theme') !== 'light') html.classList.add('dark');
+        if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
         var palette = localStorage.getItem('palette') || 'nyc';
         if (palette !== 'poster') html.dataset.theme = palette;
       } catch (e) {
-        html.classList.add('dark');
         html.dataset.theme = 'nyc';
       }
     </script>

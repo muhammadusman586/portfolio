@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#F2F2F2" />
+    <title>Wrong platform · Muhammad Usman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;800&family=Bowlby+One&family=IBM+Plex+Mono:wght@700&family=Permanent+Marker&display=swap"
+    />
+    <style>
+      :root { --bg: #f2f2f2; --fg: #111; --ink: #111; --paper: #f7f6f1; --accent: #ee352e; --signal: #fccc0a; --sky: #6cbe45; }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        min-height: 100vh; display: grid; place-items: center; padding: 24px 16px;
+        background: var(--bg) radial-gradient(rgba(17,17,17,.07) 1px, transparent 1px) 0 0 / 14px 14px;
+        color: var(--fg); font-family: Archivo, 'Helvetica Neue', Arial, sans-serif; overflow-x: hidden;
+      }
+      main { width: min(720px, 100%); }
+      .tag {
+        display: inline-block; background: var(--signal); color: var(--ink); padding: 4px 12px; transform: rotate(-2deg);
+        font: 700 12px/1.4 'IBM Plex Mono', monospace; letter-spacing: .2em; text-transform: uppercase;
+      }
+      h1 {
+        margin-top: 14px; font: 400 clamp(3.2rem, 13vw, 7.5rem)/.85 'Bowlby One', 'Arial Black', sans-serif;
+        text-shadow: .06em .05em 0 var(--accent); text-transform: uppercase;
+      }
+      .board {
+        margin-top: 28px; border: 3px solid var(--ink); background: #111; color: #eeece6; box-shadow: 8px 8px 0 var(--accent); padding: 16px 18px;
+        font: 700 13px/1.6 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .08em;
+      }
+      .board .row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+      .board .k { color: rgba(238,236,230,.6); }
+      .board .v { color: var(--signal); }
+      .blink { animation: blink 1.2s ease-in-out infinite; color: var(--accent); }
+      p.note { margin-top: 22px; font-size: 1.15rem; line-height: 1.6; color: rgba(17,17,17,.75); }
+      .marker { font-family: 'Permanent Marker', cursive; color: var(--accent); }
+      a.btn {
+        display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; padding: 12px 20px;
+        border: 3px solid var(--ink); background: var(--signal); color: var(--ink); box-shadow: 6px 6px 0 var(--accent);
+        font: 800 14px/1 Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+        transition: transform .1s, box-shadow .1s;
+      }
+      a.btn:hover { transform: translate(-2px, -2px); box-shadow: 9px 9px 0 var(--accent); }
+      a.btn:active { transform: translate(5px, 5px); box-shadow: none; }
+      a.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+      .track { position: relative; height: 70px; margin-top: 36px; }
+      .track::before { content: ''; position: absolute; inset: auto 0 12px; height: 6px; background: var(--fg); }
+      .track::after {
+        content: ''; position: absolute; inset: auto 0 0; height: 12px; opacity: .6;
+        background: repeating-linear-gradient(90deg, var(--fg) 0 6px, transparent 6px 22px);
+      }
+      .train { position: absolute; bottom: 14px; width: 170px; animation: lost 6s ease-in-out infinite; }
+      @keyframes lost { 0%, 100% { left: 0; transform: scaleX(1); } 49% { transform: scaleX(1); } 50% { left: calc(100% - 170px); transform: scaleX(-1); } 99% { transform: scaleX(-1); } }
+      @keyframes blink { 50% { opacity: .25; } }
+      @media (prefers-reduced-motion: reduce) { .train, .blink { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="tag">Error 404 · Station not found</span>
+      <h1>Wrong<br />platform</h1>
+      <div class="board" role="status">
+        <div class="row"><span class="k">Service</span><span class="v">This page</span></div>
+        <div class="row"><span class="k">Status</span><span class="blink">Not stopping here</span></div>
+      </div>
+      <p class="note">
+        This train doesn’t stop at that address. <span class="marker">mind the gap</span> and head back to the departure board.
+      </p>
+      <a class="btn" href="/">← Back to Departure</a>
+      <div class="track" aria-hidden="true">
+        <svg class="train" viewBox="0 0 204 70">
+          <path d="M10 8h146c24 0 38 16 44 34v12c0 4-3 6-6 6H10c-5 0-8-3-8-8V16c0-5 3-8 8-8z" fill="#F7F6F1" stroke="#111" stroke-width="3" stroke-linejoin="round" />
+          <path d="M3 40h194v9H3z" fill="#EE352E" />
+          <path d="M3 40h194M3 49h196" stroke="#111" stroke-width="2" />
+          <rect x="16" y="16" width="26" height="16" rx="3" fill="#6CBE45" stroke="#111" stroke-width="2.5" />
+          <rect x="50" y="16" width="26" height="16" rx="3" fill="#6CBE45" stroke="#111" stroke-width="2.5" />
+          <rect x="84" y="16" width="26" height="16" rx="3" fill="#6CBE45" stroke="#111" stroke-width="2.5" />
+          <rect x="118" y="16" width="26" height="16" rx="3" fill="#6CBE45" stroke="#111" stroke-width="2.5" />
+          <path d="M152 16h8c12 0 22 7 26 16h-34z" fill="#6CBE45" stroke="#111" stroke-width="2.5" stroke-linejoin="round" />
+          <circle cx="194" cy="44" r="4" fill="#FCCC0A" stroke="#111" stroke-width="2" />
+          <g fill="#111"><circle cx="28" cy="62" r="7" /><circle cx="56" cy="62" r="7" /><circle cx="140" cy="62" r="7" /><circle cx="168" cy="62" r="7" /></g>
+        </svg>
+      </div>
+    </main>
+  </body>
+</html>

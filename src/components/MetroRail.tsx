@@ -10,6 +10,7 @@ import {
 } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { STATIONS } from '../data';
+import { haptic } from '../prefs';
 import { play } from '../sound';
 import Train from './Train';
 
@@ -32,11 +33,6 @@ const setFlag = (k: string) => {
   }
 };
 
-/**
- * The metro line: a vertical rail on the right (lg+) and a horizontal rail along the
- * bottom on smaller screens. One stop per section, a train that follows scroll and can
- * be dragged to scrub, J/K to hop stations, and "now arriving" banners.
- */
 const MetroRail = () => {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 32, mass: 0.4 });
@@ -44,7 +40,6 @@ const MetroRail = () => {
   const ridePct = useTransform(progress, (v) => `RIDE ${Math.round(v * 100)}%`);
   const trail = useTransform(useVelocity(scrollYProgress), [-1.5, 0, 1.5], [1, 0, 1]);
 
-  // Stop positions follow real section offsets, so the train reaches a stop as its section arrives.
   const [stops, setStops] = useState<number[]>(STATIONS.map((_, i) => i / (STATIONS.length - 1)));
   const [active, setActive] = useState(0);
   const [banner, setBanner] = useState<number | null>(null);
@@ -76,7 +71,6 @@ const MetroRail = () => {
     if (idx !== active) setActive(idx);
   });
 
-  // Announce a station only once the reader settles on it, not while flying past.
   const first = useRef(true);
   useEffect(() => {
     if (first.current) return void (first.current = false);
@@ -85,7 +79,6 @@ const MetroRail = () => {
     return () => (clearTimeout(show), clearTimeout(hide));
   }, [active]);
 
-  // J / K hop between stations (ignored while typing).
   const activeRef = useRef(active);
   activeRef.current = active;
   useEffect(() => {
@@ -103,7 +96,6 @@ const MetroRail = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Show the keyboard tip once per visitor, on wide screens only.
   useEffect(() => {
     if (readFlag('kbdHint') || !window.matchMedia('(min-width: 1024px)').matches) return;
     const show = setTimeout(() => setHint(true), 2500);
@@ -117,6 +109,7 @@ const MetroRail = () => {
     onPointerDown: (e: PointerEvent<HTMLDivElement>) => {
       dragging.current = true;
       setGrabbed(true);
+      haptic();
       e.currentTarget.setPointerCapture(e.pointerId);
     },
     onPointerMove: (e: PointerEvent<HTMLDivElement>) => {
@@ -129,7 +122,6 @@ const MetroRail = () => {
 
   return (
     <>
-      {/* vertical rail, lg+ */}
       <nav aria-label="Sections" className="fixed right-8 top-[10vh] z-40 hidden h-[72vh] w-10 select-none lg:block">
         <div ref={railRef} className="absolute inset-y-0 left-1/2 w-[6px] -translate-x-1/2 bg-fg" />
         <div className="absolute -bottom-7 left-1/2 h-4 w-8 -translate-x-1/2 border-2 border-ink bg-[repeating-linear-gradient(45deg,#111_0_5px,rgb(var(--signal))_5px_10px)]" />
@@ -201,7 +193,6 @@ const MetroRail = () => {
         </AnimatePresence>
       </nav>
 
-      {/* horizontal rail, below lg */}
       <nav
         aria-label="Sections"
         className="fixed inset-x-0 bottom-0 z-40 flex h-14 select-none items-center gap-3 border-t-[3px] border-ink bg-bg/95 px-4 backdrop-blur-sm lg:hidden"

@@ -3,14 +3,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { MousePointerClick } from 'lucide-react';
 import { LINES, PROJECTS, USED_IN, slug } from '../data';
 import { flashTo } from '../dom';
+import { haptic } from '../prefs';
 import { StationHeader } from './ui';
 
 const isProject = (name: string) => PROJECTS.some((p) => p.title === name);
 const targetId = (name: string) => `${isProject(name) ? 'ticket' : 'role'}-${slug(name)}`;
-// The deep line colour is dark in every theme, so its labels need light text.
+// Deep and black lines are dark in every theme, so their labels need light text.
 const onDeep = (color: string) => (color.includes('--deep') || color === '#111111' ? 'text-paper' : '');
 
-/** Tech stack drawn as a transit map: each line is a domain, each stop a tool. Click a stop to see where it was used. */
 const Skills = () => {
   const [focus, setFocus] = useState<string | null>(null);
   const [picked, setPicked] = useState<{ stop: string; color: string } | null>(null);
@@ -52,7 +52,6 @@ const Skills = () => {
                 style={{ background: line.color }}
                 className="absolute left-2 right-2 top-[22px] h-3 origin-left border-y-[3px] border-ink"
               />
-              {/* a little car looping along the line */}
               <motion.span
                 animate={{ left: ['0%', '96%'] }}
                 transition={{ duration: 6 + li, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
@@ -71,7 +70,7 @@ const Skills = () => {
                       className="w-16 sm:w-24"
                     >
                       <button
-                        onClick={() => setPicked(on ? null : { stop, color: line.color })}
+                        onClick={() => (haptic(), setPicked(on ? null : { stop, color: line.color }))}
                         aria-pressed={on}
                         className="group focus-ring flex w-full flex-col items-center"
                       >

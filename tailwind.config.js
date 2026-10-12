@@ -4,14 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Theme tokens are CSS vars (see index.css): bg/fg flip at night, the
-        // rest change with the chosen line theme. paper/ink/muted are fixed.
+        // Theme tokens are CSS vars defined per theme in index.css.
         bg: 'rgb(var(--bg) / <alpha-value>)',
         fg: 'rgb(var(--fg) / <alpha-value>)',
-        accent: 'rgb(var(--accent) / <alpha-value>)', // stickers, shadows at night, poster echo
-        signal: 'rgb(var(--signal) / <alpha-value>)', // highlights; always paired with dark text
-        deep: 'rgb(var(--deep) / <alpha-value>)', // dark secondary; paired with light text
-        sky: 'rgb(var(--sky) / <alpha-value>)', // light secondary (windows, chips)
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        signal: 'rgb(var(--signal) / <alpha-value>)',
+        deep: 'rgb(var(--deep) / <alpha-value>)',
+        sky: 'rgb(var(--sky) / <alpha-value>)',
         board: 'rgb(var(--board) / <alpha-value>)',
         paper: '#F7F6F1',
         ink: '#111111',

@@ -1,25 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, TrainFront } from 'lucide-react';
+import { THEMES, haptic, setPalette, usePrefs, type ThemeId } from '../prefs';
 import { play } from '../sound';
 
-// Swatches are literal hex because the menu shows every theme at once, not just the active one.
-// Keep in sync with the [data-theme] blocks in index.css.
-const THEMES = [
-  { id: 'poster', name: 'Poster Pop', note: 'Hot pink · acid lime', sw: ['#FF3EA5', '#E6FF00', '#2D4BFF', '#7AF7FF'] },
-  { id: 'london', name: 'London Underground', note: 'Central red · Circle yellow · Piccadilly blue', sw: ['#DC241F', '#FFD329', '#0019A8', '#95CDBA'] },
-  { id: 'tokyo', name: 'Tokyo Metro', note: 'Marunouchi red · Ginza orange · Chiyoda green', sw: ['#F62E36', '#FF9500', '#00785A', '#9ADCEB'] },
-  { id: 'nyc', name: 'NYC Subway', note: '1/2/3 red · N/Q/R yellow · A/C/E blue', sw: ['#EE352E', '#FCCC0A', '#0039A6', '#6CBE45'] },
-] as const;
-
-type ThemeId = (typeof THEMES)[number]['id'];
-
-const current = (): ThemeId => (document.documentElement.dataset.theme as ThemeId) || 'poster';
-
-/** "Choose your line": switches the colour theme; saved per visitor. */
 const ThemePicker = () => {
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<ThemeId>(current);
+  const { palette: theme } = usePrefs();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,15 +20,9 @@ const ThemePicker = () => {
   }, [open]);
 
   const choose = (id: ThemeId) => {
-    setTheme(id);
-    if (id === 'poster') delete document.documentElement.dataset.theme;
-    else document.documentElement.dataset.theme = id;
-    try {
-      localStorage.setItem('palette', id);
-    } catch {
-      /* storage blocked: choice lasts this visit only */
-    }
+    setPalette(id);
     play('chime');
+    haptic();
   };
 
   const active = THEMES.find((t) => t.id === theme)!;

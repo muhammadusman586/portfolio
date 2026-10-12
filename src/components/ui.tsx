@@ -1,7 +1,6 @@
 import { Fragment, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-/** Renders `**bold**` segments in content strings. */
 export const Rich = ({ text }: { text: string }) => (
   <>
     {text.split('**').map((part, i) =>

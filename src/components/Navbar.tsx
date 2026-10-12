@@ -1,28 +1,15 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Moon, Sun, Volume2, VolumeX } from 'lucide-react';
-import { isSoundOn, play, setSound } from '../sound';
+import { Command, Moon, Sun, Volume2, VolumeX } from 'lucide-react';
+import { haptic, setNight, usePrefs } from '../prefs';
+import { play, setSound } from '../sound';
 import ThemePicker from './ThemePicker';
 
-/** Slim top bar: name, availability pill, theme picker, sound toggle and night-service switch. */
 const Navbar = () => {
-  const [night, setNight] = useState(() => document.documentElement.classList.contains('dark'));
-  const [sound, setSoundState] = useState(isSoundOn);
+  const { night, sound } = usePrefs();
 
-  const toggleNight = () => {
-    const next = !night;
-    setNight(next);
-    document.documentElement.classList.toggle('dark', next);
-    try {
-      localStorage.setItem('theme', next ? 'dark' : 'light');
-    } catch {
-      /* storage blocked: choice lasts this visit only */
-    }
-  };
-
+  const toggleNight = () => (setNight(!night), haptic());
   const toggleSound = () => {
     setSound(!sound);
-    setSoundState(!sound);
     if (!sound) play('chime');
   };
 
@@ -38,6 +25,15 @@ const Navbar = () => {
             Now boarding: software engineer roles
           </span>
 
+          <button
+            onClick={() => window.dispatchEvent(new Event('commandmenu'))}
+            aria-label="Open ticket machine (command menu)"
+            title="Ticket machine (Ctrl/⌘ K)"
+            className="focus-ring hidden h-9 items-center gap-1 border-2 border-ink bg-paper px-2 font-mono text-[11px] font-bold text-ink shadow-hard-sm md:flex"
+          >
+            <Command size={14} /> K
+          </button>
+
           <ThemePicker />
 
           <button
@@ -50,7 +46,6 @@ const Navbar = () => {
             {sound ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
 
-          {/* light-switch styled toggle */}
           <button
             onClick={toggleNight}
             role="switch"

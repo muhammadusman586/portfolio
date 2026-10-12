@@ -1,11 +1,9 @@
-// Tiny Web Audio synth: no audio files. On by default; the navbar toggle mutes it.
-
 let ctx: AudioContext | null = null;
 let enabled = true;
 try {
   enabled = localStorage.getItem('sound') !== 'off';
 } catch {
-  /* storage blocked: keep the default */
+  /* ignore */
 }
 
 export const isSoundOn = () => enabled;
@@ -17,6 +15,7 @@ export const setSound = (on: boolean) => {
   } catch {
     /* ignore */
   }
+  window.dispatchEvent(new Event('prefschange')); // PREFS_EVENT inlined to avoid a prefs <-> sound import cycle
 };
 
 const tone = (freq: number, start: number, dur: number, type: OscillatorType = 'sine', gain = 0.15) => {
@@ -33,7 +32,6 @@ const tone = (freq: number, start: number, dur: number, type: OscillatorType = '
 };
 
 const SOUNDS = {
-  // classic two-note station chime
   chime: () => (tone(659, 0, 0.6), tone(523, 0.32, 0.8)),
   punch: () => tone(180, 0, 0.08, 'square', 0.12),
   toot: () => (tone(392, 0, 0.18, 'square', 0.06), tone(392, 0.24, 0.3, 'square', 0.06)),

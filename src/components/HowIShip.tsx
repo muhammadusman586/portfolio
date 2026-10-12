@@ -9,9 +9,8 @@ import Train from './Train';
 const LAST = SHIP_STEPS.length - 1;
 const STEP_MS = 1100;
 
-/** "How I ship": a commit train rides the deploy route and the log fills in stop by stop. */
 const HowIShip = () => {
-  const [at, setAt] = useState(-1); // index of the last reached stop; -1 = waiting at the platform
+  const [at, setAt] = useState(-1); // last reached stop; -1 = not started
   const [run, setRun] = useState(0);
   const running = at >= 0 && at < LAST;
 
@@ -45,7 +44,6 @@ const HowIShip = () => {
         onViewportEnter={() => at === -1 && !run && dispatch()}
         className="border-[3px] border-ink bg-paper p-5 text-ink shadow-hard-lg sm:p-8"
       >
-        {/* route */}
         <div className="relative mx-2 mb-4 mt-14 sm:mx-6">
           <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 border-y-[3px] border-ink bg-[#B07CFF]" />
           <motion.div
@@ -90,7 +88,6 @@ const HowIShip = () => {
           ))}
         </ol>
 
-        {/* log */}
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
           <div className="min-h-[178px] border-[3px] border-ink bg-board p-4 font-mono text-xs leading-6 text-paper sm:text-sm" aria-live="polite">
             <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-paper/50">deploy.log</p>

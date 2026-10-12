@@ -1,4 +1,3 @@
-/** Scroll an element into view and pulse an accent-coloured ring around it so the eye lands on it. */
 export const flashTo = (id: string) => {
   const el = document.getElementById(id);
   if (!el) return;

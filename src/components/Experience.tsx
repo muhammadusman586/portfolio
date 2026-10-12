@@ -3,7 +3,6 @@ import { ArrowUpRight } from 'lucide-react';
 import { JOURNEY, slug } from '../data';
 import { Rich, StationHeader } from './ui';
 
-/** Rubber stamp that thuds onto the row when it scrolls into view. */
 const Stamp = ({ big, small, id }: { big: string; small: string; id: string }) => (
   <motion.svg
     viewBox="0 0 120 120"

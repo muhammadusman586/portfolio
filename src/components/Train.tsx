@@ -1,4 +1,3 @@
-/** Side-view metro car, nose pointing right. Drawn in code, no assets. */
 const Train = ({ className = '' }: { className?: string }) => (
   <svg viewBox="0 0 204 70" className={className} aria-hidden="true">
     <path
@@ -13,7 +12,6 @@ const Train = ({ className = '' }: { className?: string }) => (
     {[16, 50, 84, 118].map((x) => (
       <rect key={x} className="train-win" x={x} y="16" width="26" height="16" rx="3" style={{ fill: 'rgb(var(--sky))' }} stroke="#111" strokeWidth="2.5" />
     ))}
-    {/* driver in the cab window */}
     <path d="M152 16h8c12 0 22 7 26 16h-34z" style={{ fill: 'rgb(var(--sky))' }} stroke="#111" strokeWidth="2.5" strokeLinejoin="round" />
     <circle cx="164" cy="26" r="5" fill="#111" />
     <path d="M158 32c0-4 3-6 6-6s6 2 6 6" style={{ fill: 'rgb(var(--signal))' }} stroke="#111" strokeWidth="2" />

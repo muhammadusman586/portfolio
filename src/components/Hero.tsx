@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
-import { ArrowDown, FileDown } from 'lucide-react';
+import { ArrowDown, FileDown, TrainFront } from 'lucide-react';
 import { LINKS } from '../data';
+import { ago, useLastPush } from '../github';
+import { haptic } from '../prefs';
 import { play } from '../sound';
 import Train from './Train';
 
@@ -9,7 +11,22 @@ const DESTINATIONS = ['SOFTWARE ENGINEER', 'NEXT.JS + REACT', 'NODE + POSTGRES',
 const WIDTH = 19;
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.';
 
-/** Split-flap board: characters scramble, then settle left to right. */
+const Greeting = () => {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  const h = now.getHours();
+  const part = h < 5 ? 'Late night' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : h < 22 ? 'Good evening' : 'Late night';
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return (
+    <p className="mb-3 font-marker text-lg text-accent">
+      {part}, passenger <span className="font-mono text-xs font-bold uppercase tracking-wider text-fg/60">· {time} your time</span>
+    </p>
+  );
+};
+
 const SplitFlap = ({ text }: { text: string }) => {
   const target = text.padEnd(WIDTH).slice(0, WIDTH);
   const [shown, setShown] = useState(target);
@@ -43,27 +60,6 @@ const SplitFlap = ({ text }: { text: string }) => {
   );
 };
 
-const ago = (iso: string) => {
-  const m = Math.max(1, Math.round((Date.now() - Date.parse(iso)) / 60000));
-  return m < 60 ? `${m}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`;
-};
-
-/** Latest public push from GitHub, or null (rate-limited, offline, no recent pushes). */
-const useLastPush = () => {
-  const [push, setPush] = useState<{ repo: string; when: string } | null>(null);
-  useEffect(() => {
-    const user = LINKS.github.split('/').pop();
-    fetch(`https://api.github.com/users/${user}/events/public?per_page=30`)
-      .then((r) => (r.ok ? r.json() : []))
-      .then((events: { type: string; repo: { name: string }; created_at: string }[]) => {
-        const e = events.find((ev) => ev.type === 'PushEvent');
-        if (e) setPush({ repo: e.repo.name.split('/')[1], when: e.created_at });
-      })
-      .catch(() => {});
-  }, []);
-  return push;
-};
-
 const Hero = () => {
   const [dest, setDest] = useState(0);
   const [toot, setToot] = useState(false);
@@ -80,9 +76,7 @@ const Hero = () => {
     train.start({ x: 0, transition: { duration: 1.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] } });
   }, [train]);
 
-  // Click the train: it departs right and the next one pulls in from the left.
   const depart = async () => {
-    // five clicks within 3s = rush hour easter egg
     const now = Date.now();
     clicks.current = [...clicks.current.filter((t) => now - t < 3000), now];
     if (clicks.current.length >= 5) {
@@ -90,6 +84,7 @@ const Hero = () => {
       window.dispatchEvent(new Event('rushhour'));
     }
     play('toot');
+    haptic(30);
     setToot(true);
     await train.start({ x: '120vw', transition: { duration: 0.9, ease: [0.7, 0, 0.84, 0] } });
     train.set({ x: '-120vw' });
@@ -99,7 +94,6 @@ const Hero = () => {
 
   return (
     <section id="home" className="relative flex min-h-screen flex-col justify-center overflow-hidden px-4 pb-24 pt-28 sm:px-6 lg:pr-32">
-      {/* skyline silhouette */}
       <svg aria-hidden viewBox="0 0 1200 200" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-[28%] h-48 w-full text-fg/[0.07]">
         <path
           fill="currentColor"
@@ -153,7 +147,6 @@ const Hero = () => {
           </motion.span>
         </div>
 
-        {/* track + train */}
         <div className="relative mt-2 h-16">
           <div className="absolute inset-x-0 bottom-3 h-[6px] bg-fg" />
           <div className="absolute inset-x-0 bottom-0 h-3 bg-[repeating-linear-gradient(90deg,rgb(var(--fg))_0_6px,transparent_6px_22px)] opacity-60" />
@@ -201,6 +194,7 @@ const Hero = () => {
             transition={{ delay: 1.1, type: 'spring', stiffness: 200, damping: 18 }}
             className="lg:justify-self-end"
           >
+            <Greeting />
             <div className="border-[3px] border-ink bg-board p-4 shadow-hard">
               <div className="mb-3 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-paper/70">
                 <span>Next departure</span>
@@ -224,12 +218,14 @@ const Hero = () => {
               <a href={LINKS.resume} download className="btn focus-ring bg-paper">
                 <FileDown size={16} /> Résumé
               </a>
+              <button onClick={() => window.dispatchEvent(new Event('express'))} className="btn focus-ring bg-signal">
+                <TrainFront size={16} /> Ride the express
+              </button>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* marquee strip */}
       <div className="absolute inset-x-0 bottom-0 -rotate-1 overflow-hidden border-y-[3px] border-ink bg-signal py-2 text-ink">
         <div className="flex w-max animate-marquee font-mono text-sm font-bold uppercase tracking-[0.25em]">
           {Array.from({ length: 2 }, (_, k) => (

@@ -10,7 +10,6 @@ const FACTS = [
   ['Specialty', 'Integrations'],
 ];
 
-/** Photo ID styled as a transit pass: tilts toward the cursor, click to flip. */
 const MetroPass = () => {
   const [flipped, setFlipped] = useState(false);
   const mx = useMotionValue(0);
@@ -38,7 +37,6 @@ const MetroPass = () => {
         className="focus-ring relative mx-auto block aspect-[3/4.2] w-full max-w-[320px] text-left"
         aria-label={flipped ? 'Show pass front' : 'Show pass back'}
       >
-        {/* front */}
         <div className="absolute inset-0 flex flex-col border-[3px] border-ink bg-paper text-ink shadow-hard-lg [backface-visibility:hidden]">
           <div className="flex items-center justify-between bg-deep px-4 py-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-paper">
             <span>MU Metro</span>
@@ -55,7 +53,6 @@ const MetroPass = () => {
           </div>
         </div>
 
-        {/* back */}
         <div className="absolute inset-0 flex flex-col justify-between border-[3px] border-ink bg-signal p-5 text-ink shadow-hard-lg [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div>
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em]">Passenger details</p>

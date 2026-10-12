@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, ExternalLink, Github, Lock, Server, Ticket as TicketIcon, X } from 'lucide-react';
 import { PROJECTS, slug, type Project } from '../data';
+import { haptic } from '../prefs';
 import { play } from '../sound';
 import { Rich, StationHeader } from './ui';
 
@@ -12,7 +13,6 @@ const BG: Record<Project['color'], string> = {
   deep: 'bg-deep text-paper',
 };
 
-/** Client work has no public screenshot, so draw its data flow as a metro route instead. */
 const FlowCover = ({ p, big = false }: { p: Project; big?: boolean }) => (
   <div
     role="img"
@@ -22,13 +22,12 @@ const FlowCover = ({ p, big = false }: { p: Project; big?: boolean }) => (
     <span className="absolute left-4 top-3 font-mono text-[10px] uppercase tracking-[0.25em] text-paper/50">Route map</span>
     <div className="relative mx-10">
       <div className="absolute inset-x-0 top-[10px] h-2 bg-signal" />
-      {/* CSS, not Framer: the parent AnimatePresence has initial={false}, which would freeze it */}
+      {/* CSS animation: the parent AnimatePresence initial={false} would freeze a Framer one */}
       <span className="absolute top-[5px] h-[18px] w-7 -translate-x-1/2 animate-shuttle rounded-sm border-[3px] border-ink bg-paper motion-reduce:animate-none" />
       <ol className="relative flex justify-between">
         {p.flow!.map((stop, i) => (
           <li key={stop} className="relative flex w-0 flex-col items-center">
             <span className="relative z-10 block h-7 w-7 shrink-0 rounded-full border-[4px] border-ink bg-paper" />
-            {/* alternate labels above/below so neighbours never collide */}
             <span
               className={`absolute w-20 text-center font-mono font-bold uppercase leading-tight ${big ? 'text-xs' : 'text-[10px]'} ${
                 i % 2 ? 'top-9' : 'bottom-9'
@@ -49,7 +48,6 @@ const NoSource = () => (
   </p>
 );
 
-/** Full write-up in a native <dialog>: focus trap, Esc to close and backdrop come for free. */
 const BuildNotes = ({ p, onClose }: { p: Project; onClose: () => void }) => {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => ref.current?.showModal(), []);
@@ -123,7 +121,6 @@ const BuildNotes = ({ p, onClose }: { p: Project; onClose: () => void }) => {
   );
 };
 
-/** A transit ticket: punch it to swap the screenshot for links; open the build notes for the full story. */
 const Ticket = ({ p, i }: { p: Project; i: number }) => {
   const [punched, setPunched] = useState(false);
   const [notes, setNotes] = useState(false);
@@ -222,7 +219,6 @@ const Ticket = ({ p, i }: { p: Project; i: number }) => {
         </button>
       </div>
 
-      {/* perforation with side notches */}
       <div className="relative mt-auto border-t-[3px] border-dashed border-ink">
         <span className="absolute -left-[15px] -top-[13px] h-6 w-6 rounded-full border-[3px] border-ink bg-bg [clip-path:inset(0_0_0_50%)]" />
         <span className="absolute -right-[15px] -top-[13px] h-6 w-6 rounded-full border-[3px] border-ink bg-bg [clip-path:inset(0_50%_0_0)]" />
@@ -242,7 +238,7 @@ const Ticket = ({ p, i }: { p: Project; i: number }) => {
             )}
           </AnimatePresence>
           <motion.button
-            onClick={() => (play('punch'), setPunched(!punched))}
+            onClick={() => (play('punch'), haptic(20), setPunched(!punched))}
             whileTap={{ scale: 0.9, rotate: -4 }}
             className="focus-ring inline-flex items-center gap-1.5 border-[3px] border-ink bg-ink px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-signal"
             aria-pressed={punched}
