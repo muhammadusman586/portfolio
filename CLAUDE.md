@@ -43,8 +43,8 @@ or click the hero train 5×), Hero fetches the latest public GitHub push.
 
 ## External Services
 
-**EmailJS** powers the contact form. Ids come from `VITE_EMAILJS_SERVICE_ID`,
-`VITE_EMAILJS_TEMPLATE_ID`, `VITE_EMAILJS_PUBLIC_KEY` (`.env.local` locally,
+**EmailJS** powers the contact form. Ids come from `EMAILJS_SERVICE_ID`,
+`EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY` (`.env.local` locally,
 Vercel project env vars in production; see `.env.example`). The library is
 dynamically imported on submit. Spam guards: hidden `website` honeypot and a
 3 s minimum fill time (both fake success without sending).

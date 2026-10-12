@@ -14,9 +14,9 @@ const ROWS = [
 
 // Must also be set in Vercel's project env vars, or the form can't send in production.
 const EMAILJS = {
-  service: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  template: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  key: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+  service: import.meta.env.EMAILJS_SERVICE_ID,
+  template: import.meta.env.EMAILJS_TEMPLATE_ID,
+  key: import.meta.env.EMAILJS_PUBLIC_KEY,
 };
 const MIN_FILL_MS = 3000;
 
@@ -76,7 +76,7 @@ const Contact = () => {
       return;
     }
     if (!EMAILJS.service || !EMAILJS.template || !EMAILJS.key) {
-      console.error('Contact form: VITE_EMAILJS_* env vars are missing, so messages cannot be sent.');
+      console.error('Contact form: EMAILJS_* env vars are missing, so messages cannot be sent.');
       setStatus('error');
       return;
     }

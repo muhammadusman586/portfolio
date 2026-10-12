@@ -41,9 +41,12 @@ test('night switch toggles and persists', async ({ page }) => {
 test('ticket machine opens with Ctrl+K and jumps to a station', async ({ page, isMobile }) => {
   test.skip(isMobile, 'keyboard shortcut is a desktop feature');
   await page.goto('/');
-  await page.keyboard.press('Control+k');
   const menu = page.getByRole('dialog', { name: 'Ticket machine' });
-  await expect(menu).toBeVisible();
+  // The shortcut listener attaches after React mounts; retry until the menu opens.
+  await expect(async () => {
+    if (!(await menu.isVisible())) await page.keyboard.press('Control+k');
+    await expect(menu).toBeVisible({ timeout: 1500 });
+  }).toPass({ timeout: 10_000 });
   await page.getByRole('combobox', { name: 'Search actions' }).fill('terminus');
   await page.keyboard.press('Enter');
   await expect(menu).toBeHidden();
