@@ -8,7 +8,7 @@ import { Experience, Projects } from './components/Timeline';
 import { LINKS, PROJECTS, type Project } from './data';
 import { say } from './say';
 
-const HI = ['hi! hire usman?', 'he builds webhooks', 'try dragging the M', 'ok bye 👋'];
+const HI = ['hi! hire usman?', 'he builds AI teammates', 'try dragging the M', 'ok bye 👋'];
 
 // Follows the system theme; the button overrides it for this visit only.
 function ThemeButton() {
@@ -50,17 +50,17 @@ export default function App() {
         <SpringyName />
         <Buddy id="main" className="hero-buddy" lines={HI} />
         <p className="meta tagline">
-          Software engineer · Integrations · AI pipelines
+          Software & AI engineer · Agents · Full-stack products
           <br />
           RipeSeed, Lahore
         </p>
       </header>
 
       <p className="bio">
-        I build the parts of products that move data around: <a {...caseLink('clarityhero')}>AI briefing pipelines</a>,{' '}
-        <a {...caseLink('dialpad-quickbase')}>webhook integrations</a> that don’t drop events, and the{' '}
-        <a {...caseLink('roofing-platform')}>Next.js frontends</a> on top. Engineer at <a href="https://ripeseed.io">RipeSeed</a>;
-        before that Laravel and React at Sixlogics, and a CS degree from FAST.
+        I build AI products that connect models to real tools and workflows: <a {...caseLink('ai-teammates')}>agents with their own computers</a>{' '}
+        and <a {...caseLink('clarityhero')}>AI briefing pipelines</a> that turn business data into decisions. At{' '}
+        <a href="https://ripeseed.io">RipeSeed</a>, I work across LLM pipelines, integrations and full-stack development
+        with TypeScript, Next.js and Node.js.
       </p>
 
       <nav className="meta links" aria-label="Links">

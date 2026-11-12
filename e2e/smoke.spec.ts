@@ -15,7 +15,7 @@ const trackErrors = (page: Page) => {
 test('home renders every stop with no errors or sideways scroll', async ({ page }) => {
   const errors = trackErrors(page);
   await page.goto('/');
-  await expect(page).toHaveTitle(/Muhammad Usman — Software Engineer/);
+  await expect(page).toHaveTitle('Muhammad Usman — Software & AI Engineer');
   await expect(page.getByRole('heading', { level: 1, name: 'Muhammad Usman' })).toBeVisible();
   for (const name of ['AI Teammates', 'ClarityHero', 'Dialpad → Quickbase', 'Roofing ops platform', 'Hirrd', 'BS Computer Science, FAST NUCES'])
     await expect(page.getByRole('heading', { level: 3, name })).toBeAttached();

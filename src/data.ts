@@ -30,10 +30,10 @@ export const PROJECTS: Project[] = [
     year: 2026,
     art: 'teammates',
     summary:
-      'Most AI assistants tell you how to do something and leave the doing to you. AI Teammates are agents that work like coworkers: each has a job, its own Linux computer and the tools to use it, so it runs the command, edits the file or clicks through the app itself.',
+      'AI agents with their own computers. Each teammate has a persistent Linux workspace and tools to run commands, edit files and interact with apps. I built the agent workflows, durable background execution, teammate handoffs and live desktop view.',
     built: [
       'A persistent Daytona sandbox per teammate (shell, files and a graphical desktop) that it controls with mouse and keyboard tools.',
-      'Durable agent turns on Trigger.dev, so long desktop tasks never die inside a web request.',
+      'Durable agent turns on Trigger.dev, so long desktop tasks run outside the lifetime of a web request.',
       'Group chats with handoffs: pick who answers, and let a bot pass the work to the teammate whose job it is.',
       'A live desktop panel that streams the bot’s screen over noVNC, plus Clerk auth and Neon Postgres with server-side ownership checks.',
     ],
@@ -52,7 +52,7 @@ export const PROJECTS: Project[] = [
     year: 2026,
     art: 'clarity',
     summary:
-      'Founders drown in email, chat, CRM and accounting tools. ClarityHero reads all of it (read-only) and sends back a short, ranked daily briefing of the decisions and risks that matter.',
+      'A daily AI briefing for founders, bringing together information from email, chat, CRM and accounting tools through read-only connections. I built the multi-step LLM pipeline, Gmail and Outlook integrations, and delivery across the web app, email and Slack.',
     built: [
       'The AI pipeline: multi-step LLM jobs on Inngest that rank raw messages and records into decisions and risks, with scheduled runs and durable retries.',
       'Gmail and Outlook integrations end to end: OAuth consent, token refresh and incremental read-only sync.',
@@ -141,9 +141,9 @@ export const ROLES: Role[] = [
     logo: '/logos/ripeseed.svg',
     link: 'https://ripeseed.io',
     bullets: [
-      'Ship client products end to end in TypeScript: Next.js and React, Node.js and PostgreSQL.',
-      'Third-party integrations: OAuth flows, webhooks and background jobs with durable retries.',
-      'Scope features with clients, split ownership and take releases to production.',
+      'Build AI features and full-stack client products with TypeScript, Next.js, Node.js and PostgreSQL.',
+      'Develop multi-step LLM workflows with scheduled execution and durable retries, plus OAuth and webhook integrations.',
+      'Scope features with clients, coordinate ownership and take releases to production.',
     ],
     say: 'his current team!',
   },
