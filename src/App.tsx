@@ -1,70 +1,97 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
-import { MotionConfig } from 'framer-motion';
-import Navbar from './components/Navbar';
-import MetroRail from './components/MetroRail';
-import Hero from './components/Hero';
-import About from './components/About';
-import Experience from './components/Experience';
-import Projects from './components/Projects';
-import Skills from './components/Skills';
-import HowIShip from './components/HowIShip';
-import Now from './components/Now';
-import Contact from './components/Contact';
-import RushHour from './components/RushHour';
-import ExpressRide from './components/ExpressRide';
+import { useEffect, useState, type MouseEvent } from 'react';
+import Buddy from './components/Buddy';
+import CaseStudy from './components/CaseStudy';
+import { GitHubIcon, LinkedInIcon, MailIcon, ResumeIcon } from './components/LinkIcons';
+import Presence from './components/Presence';
+import SpringyName from './components/SpringyName';
+import { Experience, Projects } from './components/Timeline';
+import { LINKS, PROJECTS, type Project } from './data';
+import { say } from './say';
 
-const CommandMenu = lazy(() => import('./components/CommandMenu'));
+const HI = ['hi! hire usman?', 'he builds webhooks', 'try dragging the M', 'ok bye 👋'];
 
-function App() {
-  const [cmdOpen, setCmdOpen] = useState(false);
-
+// Follows the system theme; the button overrides it for this visit only.
+function ThemeButton() {
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'));
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setCmdOpen((o) => !o);
-      }
-    };
-    const onOpen = () => setCmdOpen(true);
-    window.addEventListener('keydown', onKey);
-    window.addEventListener('commandmenu', onOpen);
-    return () => (window.removeEventListener('keydown', onKey), window.removeEventListener('commandmenu', onOpen));
+    const os = matchMedia('(prefers-color-scheme: dark)');
+    const sync = () => setDark(os.matches);
+    os.addEventListener('change', sync);
+    return () => os.removeEventListener('change', sync);
   }, []);
-
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+  }, [dark]);
+  const toggle = () => setDark((d) => !d);
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="relative min-h-screen overflow-x-clip pb-14 lg:pb-0">
-        <Navbar />
-        <MetroRail />
-        <main className="mx-auto max-w-[1400px]">
-          <Hero />
-          <About />
-          <Experience />
-          <Projects />
-          <Skills />
-          <HowIShip />
-          <Now />
-          <Contact />
-        </main>
-        <footer className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-4 border-t-[3px] border-fg px-4 py-8 sm:flex-row sm:items-center sm:px-6 lg:pr-32">
-          <p className="max-w-xs font-mono text-xs text-fg/60">
-            Every train, ticket and stamp on this page is drawn in code. Psst: try typing “usman”, or press Ctrl/⌘ K.
-          </p>
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <span className="grid h-9 w-9 place-items-center border-[3px] border-ink bg-accent font-display text-sm text-ink shadow-hard-sm">MU</span>
-            © {new Date().getFullYear()} Muhammad Usman Ramzan
-          </div>
-        </footer>
-        <RushHour />
-        <ExpressRide />
-        {cmdOpen && (
-          <Suspense fallback={null}>
-            <CommandMenu onClose={() => setCmdOpen(false)} />
-          </Suspense>
-        )}
-      </div>
-    </MotionConfig>
+    <button type="button" role="switch" aria-checked={dark} aria-label="Dark mode" onClick={toggle}>
+      {dark ? 'Light mode' : 'Dark mode'}
+    </button>
   );
 }
 
-export default App;
+export default function App() {
+  const [open, setOpen] = useState<Project | null>(null);
+  const show = (p: Project) => {
+    setOpen(p);
+    say('main', p.say);
+  };
+  const caseLink = (id: string) => ({
+    href: `#${id}`,
+    onClick: (e: MouseEvent) => {
+      e.preventDefault();
+      show(PROJECTS.find((p) => p.id === id)!);
+    },
+  });
+
+  return (
+    <main>
+      <header className="hero">
+        <SpringyName />
+        <Buddy id="main" className="hero-buddy" lines={HI} />
+        <p className="meta tagline">
+          Software engineer · Integrations · AI pipelines
+          <br />
+          RipeSeed, Lahore
+        </p>
+      </header>
+
+      <p className="bio">
+        I build the parts of products that move data around: <a {...caseLink('clarityhero')}>AI briefing pipelines</a>,{' '}
+        <a {...caseLink('dialpad-quickbase')}>webhook integrations</a> that don’t drop events, and the{' '}
+        <a {...caseLink('roofing-platform')}>Next.js frontends</a> on top. Engineer at <a href="https://ripeseed.io">RipeSeed</a>;
+        before that Laravel and React at Sixlogics, and a CS degree from FAST.
+      </p>
+
+      <nav className="meta links" aria-label="Links">
+        <a href={`mailto:${LINKS.email}`}>
+          <MailIcon />
+          Email
+        </a>
+        <a href={LINKS.github}>
+          <GitHubIcon />
+          GitHub
+        </a>
+        <a href={LINKS.linkedin}>
+          <LinkedInIcon />
+          LinkedIn
+        </a>
+        <a href={LINKS.resume}>
+          <ResumeIcon />
+          Résumé
+        </a>
+      </nav>
+
+      <Experience />
+      <Projects onOpen={show} />
+      <Presence />
+
+      <footer className="meta">
+        <span>© {new Date().getFullYear()} Muhammad Usman</span>
+        <ThemeButton />
+      </footer>
+
+      <CaseStudy project={open} onClose={() => setOpen(null)} />
+    </main>
+  );
+}
