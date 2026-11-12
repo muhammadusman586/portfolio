@@ -5,10 +5,11 @@
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23FF3EA5' stroke='%23111' stroke-width='6'/><text x='50%25' y='56%25' font-family='Arial Black,sans-serif' font-size='26' font-weight='900' text-anchor='middle' dominant-baseline='middle' fill='%23111'>MU</text></svg>"
+      href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'><path d='M10 80C2 50 18 8 50 8s48 42 40 72c-2 8-78 8-80 0Z' fill='%23f2611d'/><circle cx='36' cy='44' r='11' fill='%23fff'/><circle cx='64' cy='44' r='11' fill='%23fff'/><circle cx='38' cy='45' r='5' fill='%2315161a'/><circle cx='66' cy='45' r='5' fill='%2315161a'/></svg>"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#F2F2F2" />
+    <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121317" media="(prefers-color-scheme: dark)" />
     <meta
       name="description"
       content="Muhammad Usman Ramzan — Software Engineer building full-stack products in TypeScript, Next.js, React, Node.js and PostgreSQL."
@@ -66,18 +67,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Bowlby+One&family=IBM+Plex+Mono:wght@400;600;700&family=Permanent+Marker&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,800&family=DM+Mono&display=swap"
     />
     <script>
-      // Runs before first paint to avoid a theme flash. Default: day mode + NYC Subway.
-      var html = document.documentElement;
-      try {
-        if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
-        var palette = localStorage.getItem('palette') || 'nyc';
-        if (palette !== 'poster') html.dataset.theme = palette;
-      } catch (e) {
-        html.dataset.theme = 'nyc';
-      }
+      // Runs before first paint so a dark system never flashes the light theme.
+      if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
     </script>
   </head>
   <body>

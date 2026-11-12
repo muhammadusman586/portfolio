@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LINKS } from './data';
 
-type Push = { repo: string; when: string };
+type Push = { owner: string; repo: string; when: string };
 type GhEvent = { type: string; repo: { name: string }; created_at: string };
 
 export const ago = (iso: string) => {
@@ -16,7 +16,9 @@ const fetchLastPush = () =>
     .then((r) => (r.ok ? r.json() : []))
     .then((events: GhEvent[]) => {
       const e = events.find((ev) => ev.type === 'PushEvent');
-      return e ? { repo: e.repo.name.split('/')[1], when: e.created_at } : null;
+      if (!e) return null;
+      const [owner, repo] = e.repo.name.split('/');
+      return { owner, repo, when: e.created_at };
     })
     .catch(() => null));
 
