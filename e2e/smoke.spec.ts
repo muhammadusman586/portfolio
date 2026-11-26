@@ -56,3 +56,12 @@ test('bio link opens its case study and Buddy comments', async ({ page }) => {
   await page.getByRole('button', { name: 'Say hi' }).click();
   await expect(page.locator('.hero-buddy .bubble')).toHaveText('hi! hire usman?');
 });
+
+test('a #project link opens that case study and closing clears the hash', async ({ page }) => {
+  await page.goto('/#clarityhero');
+  await expect(page.getByRole('dialog', { name: 'ClarityHero' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeHidden();
+  // The dialog's close event (which clears the hash) fires a task after it hides.
+  await expect.poll(() => page.evaluate(() => location.hash)).toBe('');
+});
