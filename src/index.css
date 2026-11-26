@@ -24,7 +24,10 @@
   color-scheme: dark;
 }
 
-html { background: var(--bg); color: var(--muted); -webkit-font-smoothing: antialiased; }
+html { background: var(--bg); color: var(--muted); -webkit-font-smoothing: antialiased; scrollbar-gutter: stable; }
+html:has(.case[open]) { overflow: hidden; }
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
 body { font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
 main { position: relative; max-width: 31rem; margin: 0 auto; padding: 18vh 20px 64px; }
 a { color: inherit; }
@@ -43,8 +46,9 @@ a { color: inherit; }
 .bio a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; transition: text-decoration-thickness 0.15s; }
 .bio a:hover { text-decoration-thickness: 3px; }
 .links { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--fg); }
-.links a { display: inline-flex; align-items: center; gap: 7px; text-decoration: none; transition: color 0.15s; }
-.links a:hover { color: var(--accent); }
+/* min-height: WCAG 2.2 target size (24px); hover underlines because accent text fails 4.5:1 on the light bg. */
+.links a { display: inline-flex; align-items: center; gap: 7px; min-height: 24px; text-decoration: underline 1.5px transparent; text-underline-offset: 4px; transition: text-decoration-color 0.15s; }
+.links a:hover { text-decoration-color: var(--accent); }
 .links svg { width: 15px; height: 15px; flex: none; }
 
 .buddy { position: relative; }
@@ -104,13 +108,13 @@ a { color: inherit; }
 @keyframes spark { 50% { transform: rotate(45deg) scale(0.7); } }
 @keyframes blinkrow { 0%, 40% { opacity: 0; } 60%, 100% { opacity: 1; } }
 
-.case { margin: auto; border: 0; padding: 0; width: min(640px, calc(100vw - 24px)); max-height: calc(100vh - 40px); border-radius: 20px; background: var(--card); color: var(--muted);
+.case { margin: auto; border: 0; padding: 0; width: min(640px, calc(100vw - 24px)); max-height: calc(100dvh - 40px); border-radius: 20px; background: var(--card); color: var(--muted);
   box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.5); overflow: auto; }
 .case::backdrop { background: rgb(18 19 23 / 0.45); backdrop-filter: blur(4px); }
 .case[open] { animation: sheet 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.15); }
 @keyframes sheet { from { opacity: 0; translate: 0 30px; scale: 0.97; } }
 .case article { position: relative; }
-.case .x { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%; background: var(--card); color: var(--fg); font-size: 20px; cursor: pointer; z-index: 1; }
+.case .x { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: var(--card); color: var(--fg); font-size: 20px; cursor: pointer; z-index: 1; }
 .case-body { padding: 22px 26px 28px; }
 .case-body h2 { color: var(--fg); font-size: 34px; letter-spacing: -0.03em; line-height: 1.05; margin: 6px 0 10px; font-weight: 800; }
 .case-body .sum { font-size: 16px; color: var(--fg); opacity: 0.85; }
@@ -124,12 +128,12 @@ a { color: inherit; }
 
 .presence { margin-top: 40px; display: grid; gap: 6px; }
 .presence li { display: flex; gap: 10px; align-items: center; min-width: 0; }
-.presence a { text-decoration: none; }
+.presence a { text-decoration: none; display: inline-flex; align-items: center; min-height: 24px; }
 .presence a:hover { color: var(--fg); }
 .presence .ic { width: 14px; display: grid; place-items: center; flex: none; }
 .presence .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
-footer { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 10.5px; opacity: 0.8; }
-footer button { cursor: pointer; text-transform: inherit; letter-spacing: inherit; }
+footer { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+footer button { min-height: 24px; cursor: pointer; text-transform: inherit; letter-spacing: inherit; }
 footer button:hover { color: var(--fg); }
 
 @media (prefers-reduced-motion: reduce) {

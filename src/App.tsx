@@ -31,10 +31,16 @@ function ThemeButton() {
 }
 
 export default function App() {
-  const [open, setOpen] = useState<Project | null>(null);
+  // Shared links like /#clarityhero open that case study.
+  const [open, setOpen] = useState<Project | null>(() => PROJECTS.find((p) => `#${p.id}` === location.hash) ?? null);
   const show = (p: Project) => {
     setOpen(p);
     say('main', p.say);
+    history.replaceState(null, '', `#${p.id}`);
+  };
+  const close = () => {
+    setOpen(null);
+    history.replaceState(null, '', location.pathname + location.search);
   };
   const caseLink = (id: string) => ({
     href: `#${id}`,
@@ -91,7 +97,7 @@ export default function App() {
         <ThemeButton />
       </footer>
 
-      <CaseStudy project={open} onClose={() => setOpen(null)} />
+      <CaseStudy project={open} onClose={close} />
     </main>
   );
 }
